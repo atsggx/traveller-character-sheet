@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juzo Okita — Traveller 2e Character Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-base:#060913;
+  --bg-surface:rgba(13,18,33,.72);
+  --bg-deep:rgba(8,11,22,.85);
+  --border:rgba(255,115,0,.22);
+  --border-strong:rgba(255,115,0,.55);
+  --accent:#ff7300;
+  --accent-glow:rgba(255,115,0,.4);
+  --cyan:#00e5ff;
+  --cyan-glow:rgba(0,229,255,.4);
+  --phosphor:#5cffd2;
+  --phosphor-dim:rgba(92,255,210,.35);
+  --text:#eef2f8;
+  --text-2:#94a3b8;
+  --muted:#475569;
+  --ok:#00e676;
+  --bad:#ff3b5c;
+  --font-display:'Orbitron',sans-serif;
+  --font-tech:'Rajdhani',sans-serif;
+  --font-body:'Inter',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg-base);
+  color:var(--text);
+  font-family:var(--font-body);
+  background-image:
+    radial-gradient(at 0% 0%,rgba(255,115,0,.08) 0,transparent 50%),
+    radial-gradient(at 100% 100%,rgba(0,229,255,.05) 0,transparent 50%),
+    linear-gradient(rgba(18,24,43,.28) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(18,24,43,.28) 1px,transparent 1px);
+  background-size:100% 100%,100% 100%,42px 42px,42px 42px;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  overflow-x:hidden;
+}
+body::after{
+  content:"";display:block;position:fixed;inset:0;pointer-events:none;z-index:9999;
+  background:linear-gradient(rgba(18,16,16,0) 50%,rgba(0,0,0,.18) 50%);
+  background-size:100% 4px;opacity:.22;
+}
+
+/* ---------- Header ---------- */
+header{
+  border-bottom:2px solid var(--border);
+  background:var(--bg-deep);backdrop-filter:blur(10px);
+  padding:14px 28px;position:sticky;top:0;z-index:100;
+  box-shadow:0 4px 20px rgba(0,0,0,.5);
+}
+.header-row{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.char-identity h1{font-family:var(--font-display);font-size:1.7rem;letter-spacing:2px;text-transform:uppercase;text-shadow:0 0 12px var(--accent-glow)}
+.char-identity .subtitle{font-family:var(--font-tech);font-size:1.05rem;color:var(--accent);letter-spacing:1px;display:flex;align-items:center;gap:10px}
+.meta-indicators{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.indicator{background:rgba(0,0,0,.4);border:1px solid var(--border);padding:5px 14px;border-radius:4px;display:flex;flex-direction:column;align-items:center;min-width:74px}
+.indicator .label{font-family:var(--font-tech);font-size:.7rem;color:var(--text-2);text-transform:uppercase;letter-spacing:.5px}
+.indicator .value{font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--cyan)}
+.indicator .value[contenteditable]{outline:none;border-bottom:1px dashed transparent;min-width:30px;text-align:center}
+.indicator .value[contenteditable]:focus{border-bottom-color:var(--accent)}
+
+/* Sound toggle */
+.sound-widget{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.4);border:1px solid var(--border);padding:6px 12px;border-radius:4px;cursor:pointer;user-select:none;transition:.2s}
+.sound-widget:hover{border-color:var(--accent);background:rgba(255,115,0,.06)}
+.sound-widget svg{fill:var(--accent);width:16px;height:16px}
+.sound-widget.muted svg{fill:var(--muted)}
+.sound-widget span{font-family:var(--font-tech);font-size:.8rem;color:var(--text-2)}
+.sound-widget.muted span{color:var(--muted)}
+
+/* ---------- Layout ---------- */
+main{max-width:1400px;width:100%;margin:20px auto;padding:0 20px;display:grid;grid-template-columns:300px 1fr;gap:20px;flex:1}
+.sidebar{display:flex;flex-direction:column;gap:18px}
+
+.card{
+  background:var(--bg-surface);border:1px solid var(--border);border-radius:8px;
+  padding:18px;backdrop-filter:blur(10px);box-shadow:0 8px 32px rgba(0,0,0,.4);
+  position:relative;overflow:hidden;
+}
+.card::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent);opacity:.7}
+.card-title{font-family:var(--font-display);font-size:.95rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;color:var(--text);display:flex;align-items:center;justify-content:space-between;border-bottom:1px dashed rgba(255,115,0,.2);padding-bottom:8px}
+.card-title .hint{font-size:.65rem;color:var(--muted);font-family:var(--font-tech);text-transform:none;letter-spacing:0}
+
+/* Portrait */
+.avatar-container{position:relative;width:100%;aspect-ratio:1;border-radius:6px;overflow:hidden;border:1px solid var(--border);background:rgba(0,0,0,.5);margin-bottom:14px}
+.avatar-img{width:100%;height:100%;object-fit:cover;filter:grayscale(18%) contrast(108%)}
+.avatar-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 65%,rgba(6,9,19,.92) 100%);pointer-events:none}
+.status-badge{position:absolute;top:10px;right:10px;background:rgba(0,230,118,.18);border:1px solid var(--ok);color:var(--ok);padding:2px 9px;border-radius:4px;font-size:.66rem;font-family:var(--font-display);text-transform:uppercase;letter-spacing:1px;animation:pulse 2.2s infinite}
+@keyframes pulse{0%{opacity:.65;box-shadow:0 0 0 0 rgba(0,230,118,.4)}70%{opacity:1;box-shadow:0 0 0 7px rgba(0,230,118,0)}100%{opacity:.65;box-shadow:0 0 0 0 rgba(0,230,118,0)}}
+.identity-row{font-family:var(--font-tech);font-size:.85rem;color:var(--text-2);display:flex;justify-content:space-between;gap:8px;padding:3px 0}
+.identity-row b{color:var(--accent);font-family:var(--font-display);font-weight:700}
+
+/* ---------- Characteristics ---------- */
+.char-row{display:grid;grid-template-columns:60px 1fr auto;align-items:center;gap:10px;background:rgba(0,0,0,.25);border:1px solid rgba(255,115,0,.1);border-radius:6px;padding:7px 11px;margin-bottom:8px;cursor:pointer;transition:.18s}
+.char-row:hover{border-color:var(--accent);background:rgba(255,115,0,.05)}
+.char-abbr{font-family:var(--font-display);font-weight:800;font-size:.95rem;color:var(--accent)}
+.char-name{display:block;font-size:.68rem;color:var(--text-2);text-transform:uppercase;letter-spacing:.5px}
+.char-fields{display:flex;align-items:center;gap:6px}
+.char-input-group{display:flex;flex-direction:column;align-items:center}
+.char-input-group label{font-size:.55rem;color:var(--muted);text-transform:uppercase}
+.char-val{width:40px;background:rgba(6,9,19,.6);border:1px solid rgba(255,115,0,.2);border-radius:4px;color:var(--text);text-align:center;font-family:var(--font-tech);font-size:1.05rem;padding:2px}
+.char-val:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 6px rgba(0,229,255,.3)}
+.char-mod{width:46px;height:40px;background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.3);border-radius:4px;display:flex;flex-direction:column;justify-content:center;align-items:center;box-shadow:inset 0 0 10px rgba(0,229,255,.05)}
+.char-mod .mv{font-family:var(--font-display);font-weight:800;font-size:1.05rem;color:var(--cyan)}
+.char-mod .ml{font-size:.5rem;color:var(--text-2);text-transform:uppercase}
+
+/* ---------- Study Period ---------- */
+.study-select{width:100%;background:rgba(6,9,19,.6);border:1px solid rgba(255,115,0,.2);border-radius:4px;color:var(--text);padding:6px 10px;font-family:var(--font-body);font-size:.88rem}
+.study-select:focus{outline:none;border-color:var(--accent)}
+.study-counters{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.counter-box{background:rgba(0,0,0,.2);border:1px solid rgba(255,115,0,.1);border-radius:6px;padding:8px;text-align:center}
+.counter-box .label{font-size:.68rem;color:var(--text-2);text-transform:uppercase;display:block;margin-bottom:6px}
+.counter-controls{display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-c{background:rgba(255,115,0,.1);border:1px solid rgba(255,115,0,.3);color:var(--accent);width:26px;height:26px;border-radius:4px;font-size:1.1rem;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
+.btn-c:hover{background:var(--accent);color:#000}
+.counter-val{font-family:var(--font-tech);font-size:1.35rem;font-weight:700;width:30px;display:inline-block;text-align:center}
+.progress-container{margin-top:12px}
+.progress-header{display:flex;justify-content:space-between;font-size:.72rem;color:var(--text-2);margin-bottom:4px}
+.progress-bar-bg{background:rgba(255,255,255,.05);border:1px solid rgba(255,115,0,.15);height:10px;border-radius:5px;overflow:hidden}
+.progress-bar-fill{background:linear-gradient(90deg,var(--accent),var(--cyan));height:100%;width:0%;transition:width .35s cubic-bezier(.4,0,.2,1);box-shadow:0 0 8px var(--accent-glow)}
+.study-note{font-size:.7rem;color:var(--text-2);line-height:1.45;border-left:2px solid var(--border);padding:4px 0 4px 10px;margin-top:10px}
+.study-roll-btn{display:block;width:100%;margin-top:8px;padding:8px;border-radius:4px;border:1px solid var(--border);background:rgba(255,115,0,.06);color:var(--text);font-family:var(--font-display);font-size:.78rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:.18s}
+.study-roll-btn:hover{border-color:var(--accent);background:rgba(255,115,0,.16)}
+
+/* ---------- Tabs ---------- */
+.tabs-nav{display:flex;border-bottom:2px solid var(--border);gap:4px;background:rgba(8,11,22,.5);padding:5px 5px 0;border-radius:8px 8px 0 0;flex-wrap:wrap}
+.tab-btn{background:transparent;border:none;color:var(--text-2);font-family:var(--font-display);font-size:.85rem;font-weight:600;padding:10px 18px;cursor:pointer;border-radius:6px 6px 0 0;transition:.18s;text-transform:uppercase;letter-spacing:1px;position:relative}
+.tab-btn::after{content:"";position:absolute;bottom:-2px;left:0;width:100%;height:2px;background:transparent;transition:.18s}
+.tab-btn:hover{color:var(--text);background:rgba(255,115,0,.04)}
+.tab-btn.active{color:var(--accent);background:rgba(255,115,0,.08);border:1px solid var(--border);border-bottom:1px solid transparent}
+.tab-btn.active::after{background:var(--accent);box-shadow:0 0 10px var(--accent-glow)}
+.tab-content{display:none;animation:fadeIn .35s cubic-bezier(.16,1,.3,1)}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.main-panel{display:flex;flex-direction:column;gap:20px}
+
+/* ---------- Skills ---------- */
+.skills-grid{display:grid;grid-template-columns:1fr;gap:10px}
+.skill-item{background:rgba(13,18,33,.4);border:1px solid rgba(255,115,0,.15);border-radius:6px;padding:11px 16px;display:flex;flex-direction:column;gap:7px;transition:.18s}
+.skill-item:hover{background:rgba(13,18,33,.65);border-color:var(--accent)}
+.skill-header-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.skill-title-group{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.skill-name{font-family:var(--font-display);font-size:.98rem}
+.skill-char-tag{font-size:.66rem;color:var(--text-2);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:2px 6px;border-radius:3px;text-transform:uppercase}
+.skill-controls{display:flex;align-items:center;gap:10px}
+.lvl-input{width:30px;background:rgba(6,9,19,.6);border:1px solid rgba(255,115,0,.2);border-radius:4px;color:var(--cyan);text-align:center;font-family:var(--font-tech);font-size:1.05rem;font-weight:700;padding:1px}
+.lvl-input:focus{outline:none;border-color:var(--cyan)}
+.skill-total{font-family:var(--font-tech);font-size:1.1rem;font-weight:700;color:var(--accent);background:rgba(255,115,0,.06);padding:2px 9px;border-radius:4px;border:1px solid var(--border);min-width:42px;text-align:center}
+.skill-passive-note{font-size:.78rem;color:var(--text-2);line-height:1.45;border-top:1px dashed rgba(255,255,255,.06);padding-top:7px}
+.specialty-row{display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px dashed rgba(255,255,255,.06);padding-top:7px;padding-left:18px;position:relative}
+.specialty-row::before{content:"└";position:absolute;left:4px;top:5px;color:var(--muted);font-size:.9rem}
+.specialty-name{font-size:.86rem;color:var(--text-2)}
+.specialty-name .ck{font-size:.7rem;color:var(--muted);text-transform:uppercase}
+.specialty-controls{display:flex;align-items:center;gap:8px}
+.specialty-total{font-family:var(--font-tech);font-size:1rem;font-weight:700;color:var(--cyan);min-width:34px;text-align:center}
+
+/* Roll buttons */
+.roll-btn{background:linear-gradient(135deg,rgba(255,115,0,.1),rgba(255,115,0,.25));border:1px solid var(--accent);color:var(--text);font-family:var(--font-display);font-size:.76rem;font-weight:700;padding:6px 11px;border-radius:4px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.18s;box-shadow:0 0 10px rgba(255,115,0,.1);text-transform:uppercase;letter-spacing:.5px}
+.roll-btn:hover{background:var(--accent);box-shadow:0 0 16px var(--accent-glow);transform:translateY(-1px);color:#000}
+.roll-btn svg{fill:currentColor;width:13px;height:13px}
+.dmg-btn{background:linear-gradient(135deg,rgba(0,229,255,.1),rgba(0,229,255,.25));border:1px solid var(--cyan);color:var(--text);font-family:var(--font-display);font-size:.76rem;font-weight:700;padding:6px 11px;border-radius:4px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.18s;text-transform:uppercase}
+.dmg-btn:hover{background:var(--cyan);color:#000;box-shadow:0 0 16px var(--cyan-glow);transform:translateY(-1px)}
+
+/* ---------- Combat ---------- */
+.combat-section{display:flex;flex-direction:column;gap:18px}
+.armor-card{background:rgba(13,18,33,.4);border:1px solid rgba(255,115,0,.15);border-radius:8px;padding:15px;display:flex;gap:15px;align-items:center}
+.armor-icon-box{width:46px;height:46px;background:rgba(255,115,0,.1);border:1px solid var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--accent);flex-shrink:0}
+.armor-details{flex:1}
+.armor-name{font-family:var(--font-display);font-size:1rem;font-weight:700}
+.armor-name .ed{color:var(--cyan);outline:none;border-bottom:1px dashed transparent}
+.armor-name .ed:focus{border-bottom-color:var(--accent)}
+.armor-desc{font-size:.8rem;color:var(--text-2);margin-top:4px;line-height:1.4}
+.armor-stats{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:6px}
+.armor-stats .w-stat .value{color:var(--cyan)}
+
+.weapon-item{background:rgba(13,18,33,.4);border:1px solid rgba(255,115,0,.15);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px;transition:.18s}
+.weapon-item:hover{background:rgba(13,18,33,.65);border-color:var(--accent)}
+.weapon-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.weapon-title{font-family:var(--font-display);font-size:1.05rem;letter-spacing:.5px}
+.weapon-tags{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.wtag{font-size:.66rem;padding:1px 7px;border-radius:3px;text-transform:uppercase;letter-spacing:.5px}
+.wtag.carried{background:rgba(0,230,118,.1);border:1px solid var(--ok);color:var(--ok)}
+.wtag.stored{background:rgba(148,163,184,.1);border:1px solid var(--text-2);color:var(--text-2)}
+.wtag.ap{background:rgba(0,229,255,.1);border:1px solid var(--cyan);color:var(--cyan)}
+.wtag.scope{background:rgba(255,115,0,.1);border:1px solid var(--accent);color:var(--accent)}
+.wtag.blast{background:rgba(255,59,92,.1);border:1px solid var(--bad);color:var(--bad)}
+.wtag.stun{background:rgba(148,163,184,.1);border:1px solid var(--text-2);color:var(--text-2)}
+
+/* Phosphor hologram */
+.holo-wrap{position:relative;border:1px solid var(--phosphor-dim);border-radius:6px;background:radial-gradient(ellipse at center,rgba(92,255,210,.07) 0%,rgba(6,9,19,.6) 70%);height:84px;overflow:hidden;margin:2px 0}
+.holo-wrap::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(92,255,210,.06) 0 1px,transparent 1px 3px);pointer-events:none;animation:scan 3.2s linear infinite}
+.holo-wrap::after{content:"HOLO // PHOSPHOR";position:absolute;top:5px;left:8px;font-family:var(--font-tech);font-size:.55rem;color:var(--phosphor-dim);letter-spacing:1px;text-transform:uppercase}
+@keyframes scan{0%{transform:translateY(-3px)}100%{transform:translateY(3px)}}
+.holo-flicker{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;animation:flicker 5.5s steps(1) infinite}
+@keyframes flicker{0%,18%,22%,25%,53%,57%,100%{opacity:1}19%,24%,55%{opacity:.45}20%{opacity:.7}}
+.holo-flicker svg{width:74%;height:74%;filter:drop-shadow(0 0 3px var(--phosphor)) drop-shadow(0 0 10px var(--phosphor-dim))}
+.holo-flicker svg path{fill:var(--phosphor);fill-opacity:.82;stroke:none}
+
+.weapon-stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(74px,1fr));gap:6px;background:rgba(0,0,0,.25);border-radius:6px;padding:9px;border:1px solid rgba(255,255,255,.02)}
+.w-stat{text-align:center}
+.w-stat .label{display:block;font-size:.6rem;color:var(--text-2);text-transform:uppercase;font-family:var(--font-tech);letter-spacing:.5px}
+.w-stat .value{font-family:var(--font-display);font-size:.92rem;color:var(--cyan);font-weight:600;outline:none;border-bottom:1px dashed transparent;min-width:18px;display:inline-block}
+.w-stat .value[contenteditable]:focus{border-bottom-color:var(--accent)}
+.weapon-actions{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.weapon-desc{font-size:.78rem;color:var(--text-2);flex:1;line-height:1.4;min-width:200px}
+.weapon-buttons{display:flex;gap:8px;flex-shrink:0}
+
+/* ---------- Inventory ---------- */
+.section-head{font-family:var(--font-display);font-size:1.05rem;color:var(--accent);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.section-head .load{font-family:var(--font-tech);font-size:.92rem;color:var(--text-2)}
+.section-head .load .ed{color:var(--cyan);outline:none;border-bottom:1px dashed transparent;font-family:var(--font-display);font-weight:700}
+.section-head .load .ed:focus{border-bottom-color:var(--accent)}
+.inventory-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.gear-list{display:flex;flex-direction:column;gap:8px}
+.gear-item{background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.05);border-radius:6px;padding:10px 13px;display:flex;justify-content:space-between;align-items:center;transition:.15s}
+.gear-item:hover{border-color:rgba(0,229,255,.2)}
+.gear-info{flex:1;padding-right:12px}
+.gear-title{font-weight:600;color:var(--text)}
+.gear-desc{font-size:.73rem;color:var(--text-2);margin-top:2px;line-height:1.35}
+.gear-meta{display:flex;gap:12px;align-items:center;font-family:var(--font-tech);font-size:.88rem;color:var(--cyan);white-space:nowrap}
+.gear-badge{background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.2);padding:2px 7px;border-radius:4px}
+.gear-badge .qty{outline:none;min-width:14px;display:inline-block;text-align:center;border-bottom:1px dashed transparent}
+.gear-badge .qty:focus{border-bottom-color:var(--accent)}
+.gear-mass{outline:none;border-bottom:1px dashed transparent;min-width:24px;display:inline-block;text-align:center}
+.gear-mass:focus{border-bottom-color:var(--accent)}
+
+.finances-box{background:rgba(13,18,33,.3);border:1px solid rgba(255,115,0,.15);border-radius:8px;padding:14px}
+.finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.finance-item{background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.03);border-radius:6px;padding:9px;display:flex;flex-direction:column}
+.finance-item label{font-size:.66rem;color:var(--text-2);text-transform:uppercase;font-family:var(--font-tech);margin-bottom:4px;letter-spacing:.5px}
+.finance-row{display:flex;align-items:center;gap:4px}
+.finance-row .pre{font-family:var(--font-display);color:var(--accent);font-weight:700}
+.finance-input{width:100%;background:transparent;border:none;color:var(--text);font-family:var(--font-display);font-size:1.05rem;font-weight:700;outline:none}
+.finance-input.negative{color:var(--bad)}
+.finance-item.editable{border-color:rgba(255,115,0,.2);background:rgba(255,115,0,.02)}
+.finance-item.span2{grid-column:span 2}
+
+.wealth-card{background:rgba(13,18,33,.3);border:1px solid rgba(255,115,0,.15);border-radius:8px;padding:14px;margin-top:14px}
+.wealth-item{background:rgba(0,0,0,.2);border:1px solid rgba(255,115,0,.1);border-radius:6px;padding:11px;margin-bottom:9px}
+.wealth-item:last-child{margin-bottom:0}
+.wealth-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.05);padding-bottom:6px;margin-bottom:6px}
+.wealth-title{font-family:var(--font-display);font-size:.92rem;color:var(--accent)}
+.wealth-value{font-family:var(--font-tech);font-weight:700;color:var(--cyan)}
+.wealth-desc{font-size:.73rem;color:var(--text-2);line-height:1.4}
+
+/* ---------- Career timeline ---------- */
+.timeline{position:relative;margin-top:14px;padding-left:0}
+.timeline-item{display:grid;grid-template-columns:96px 1fr;align-items:start;gap:0;margin-bottom:18px;position:relative}
+.timeline-rail{position:absolute;left:47px;top:50px;height:calc(100% + 18px);width:2px;background:var(--border)}
+.timeline-item:last-child .timeline-rail{display:none}
+.tl-badge-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:14px;position:relative;z-index:1}
+.tl-badge{font-family:var(--font-display);font-size:.72rem;color:#000;background:var(--accent);padding:3px 10px;border-radius:4px;text-align:center;font-weight:800;letter-spacing:.5px;white-space:nowrap;width:auto;max-width:90px}
+.tl-dot{margin-top:9px;width:14px;height:14px;border-radius:50%;background:var(--bg-base);border:2px solid var(--accent);box-shadow:0 0 8px var(--accent-glow);transition:.2s}
+.timeline-item:hover .tl-dot{background:var(--cyan);border-color:var(--cyan);box-shadow:0 0 12px var(--cyan-glow);transform:scale(1.2)}
+.tl-content{margin-left:14px;padding:14px 16px;background:rgba(13,18,33,.4);border:1px solid rgba(255,115,0,.15);border-radius:8px}
+.tl-head{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px dashed rgba(255,115,0,.2);padding-bottom:6px;margin-bottom:8px;flex-wrap:wrap}
+.tl-title{font-family:var(--font-display);font-size:.94rem}
+.tl-age{font-family:var(--font-tech);font-size:.84rem;color:var(--cyan)}
+.tl-detail{font-size:.84rem;color:var(--text-2);line-height:1.45}
+.tl-detail p{margin-bottom:5px}
+.tl-detail ul{list-style:square;padding-left:18px;margin-top:5px}
+.tl-detail li{margin-bottom:3px}
+.tl-detail strong{color:var(--accent)}
+
+/* ---------- Backstory ---------- */
+.declassified-letter{background:rgba(15,10,5,.32);border:1px solid var(--border);border-radius:8px;font-family:'Courier New',Courier,monospace;padding:26px 28px;position:relative;box-shadow:inset 0 0 30px rgba(255,115,0,.05)}
+.declassified-letter::before{content:"SECURE LOG // RETRIEVED MAIL";position:absolute;top:-11px;left:20px;background:var(--accent);color:#000;font-family:var(--font-tech);font-size:.72rem;font-weight:700;padding:2px 9px;letter-spacing:1px;border-radius:3px}
+.letter-stamp{position:absolute;top:34px;right:34px;border:3px double rgba(255,115,0,.25);color:rgba(255,115,0,.25);font-family:var(--font-display);font-size:1rem;font-weight:900;padding:5px 11px;transform:rotate(11deg);pointer-events:none;letter-spacing:2px;text-transform:uppercase}
+.letter-content{white-space:pre-wrap;font-size:.9rem;line-height:1.55;color:#e2e8f0}
+
+/* ---------- Dice modal ---------- */
+.dice-overlay{position:fixed;inset:0;background:rgba(4,6,12,.88);backdrop-filter:blur(7px);z-index:1000;display:none;align-items:center;justify-content:center;animation:fadeIn .2s ease-out}
+.dice-overlay.active{display:flex}
+.dice-window{width:820px;max-width:96vw;background:rgba(12,16,29,.96);border:2px solid var(--accent);box-shadow:0 0 44px rgba(255,115,0,.3),inset 0 0 20px rgba(255,115,0,.08);border-radius:12px;overflow:hidden;display:grid;grid-template-columns:1fr 290px;height:520px;position:relative}
+.roll-settings-bar{position:absolute;top:0;left:0;width:100%;height:48px;background:rgba(6,9,19,.92);border-bottom:1px solid rgba(255,115,0,.2);z-index:10;display:flex;align-items:center;justify-content:space-between;padding:0 16px;gap:10px}
+.modal-roll-title{font-family:var(--font-display);font-size:.86rem;letter-spacing:1px;color:var(--text)}
+.roll-settings-selectors{display:flex;gap:14px;align-items:center}
+.roll-type-group{display:flex;background:rgba(0,0,0,.5);border:1px solid rgba(255,115,0,.3);border-radius:4px;overflow:hidden}
+.roll-type-btn{background:transparent;border:none;color:var(--text-2);font-family:var(--font-tech);font-size:.82rem;padding:4px 10px;cursor:pointer;transition:.15s}
+.roll-type-btn.active{background:var(--accent);color:#000;font-weight:700}
+.roll-dm-input{display:flex;align-items:center;gap:5px}
+.roll-dm-input label{font-family:var(--font-tech);font-size:.82rem;color:var(--text-2)}
+.roll-dm-val{width:44px;background:rgba(0,0,0,.5);border:1px solid rgba(255,115,0,.3);color:var(--text);text-align:center;border-radius:4px;font-family:var(--font-tech);font-size:.92rem;padding:2px}
+.dice-tray-container{position:relative;background:radial-gradient(circle,rgba(16,23,41,.8) 0%,rgba(6,9,19,.96) 100%);display:flex;align-items:center;justify-content:center;border-right:1px solid rgba(255,115,0,.2);padding-top:48px}
+#dice-canvas{width:100%;height:100%;display:block;cursor:pointer}
+.dice-hud-hint{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);font-family:var(--font-tech);font-size:.76rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;pointer-events:none}
+.dice-sidebar{padding:62px 18px 18px;background:rgba(6,9,19,.7);display:flex;flex-direction:column;justify-content:space-between;overflow-y:auto}
+.dice-results-header{font-family:var(--font-display);font-size:.78rem;color:var(--text-2);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;text-align:center}
+.dice-numbers{display:flex;justify-content:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.die-result{width:50px;height:50px;background:rgba(0,229,255,.05);border:2px solid var(--cyan);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.7rem;font-weight:900;color:var(--cyan);box-shadow:0 0 14px rgba(0,229,255,.15);position:relative}
+.die-result.discarded{opacity:.32;border-color:var(--muted);color:var(--muted);box-shadow:none}
+.die-result.discarded::after{content:"DROP";position:absolute;bottom:-13px;font-family:var(--font-tech);font-size:.52rem;letter-spacing:.5px;color:var(--muted)}
+.dice-roll-total{font-family:var(--font-display);font-size:3.2rem;font-weight:900;color:var(--accent);text-shadow:0 0 20px var(--accent-glow);line-height:1;margin-bottom:5px;text-align:center}
+.dice-roll-formula{font-family:var(--font-tech);font-size:.98rem;color:var(--text-2);margin-bottom:20px;text-align:center;white-space:pre-wrap;line-height:1.35}
+.difficulty-checker{margin-bottom:20px;text-align:left}
+.difficulty-checker label{font-family:var(--font-tech);font-size:.78rem;color:var(--text-2);text-transform:uppercase;display:block;margin-bottom:5px;letter-spacing:.5px}
+.difficulty-select{width:100%;background:rgba(0,0,0,.5);border:1px solid rgba(255,115,0,.3);color:var(--text);border-radius:4px;padding:6px 10px;font-family:var(--font-body);font-size:.84rem}
+.difficulty-select:focus{outline:none;border-color:var(--accent)}
+.outcome-banner{border-radius:6px;padding:10px;font-family:var(--font-display);font-weight:700;font-size:1rem;letter-spacing:1px;text-transform:uppercase;margin-top:14px;text-align:center;opacity:0;transform:scale(.92);transition:.3s cubic-bezier(.175,.885,.32,1.275)}
+.outcome-banner.active{opacity:1;transform:scale(1)}
+.outcome-banner.success{background:rgba(0,230,118,.15);border:1px solid var(--ok);color:var(--ok);box-shadow:0 0 15px rgba(0,230,118,.15)}
+.outcome-banner.failure{background:rgba(255,59,92,.15);border:1px solid var(--bad);color:var(--bad);box-shadow:0 0 15px rgba(255,59,92,.15)}
+.modal-buttons{display:flex;flex-direction:column;gap:9px}
+.modal-btn{width:100%;font-family:var(--font-display);padding:10px;border-radius:4px;cursor:pointer;font-size:.82rem;font-weight:700;text-transform:uppercase;transition:.15s;letter-spacing:.5px}
+.modal-btn.primary{background:var(--accent);border:1px solid var(--accent);color:#000}
+.modal-btn.primary:hover{box-shadow:0 0 15px var(--accent-glow);background:#ff8800}
+.modal-btn.secondary{background:transparent;border:1px solid var(--border);color:var(--text)}
+.modal-btn.secondary:hover{background:rgba(255,115,0,.1);border-color:var(--accent)}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1024px){
+  main{grid-template-columns:1fr}
+  .sidebar{display:grid;grid-template-columns:1fr 1fr}
+  .dice-window{grid-template-columns:1fr;height:auto;max-height:90vh}
+  .dice-tray-container{height:300px;border-right:none;border-bottom:1px solid rgba(255,115,0,.2)}
+}
+@media (max-width:768px){
+  .header-row{flex-direction:column;align-items:flex-start}
+  .meta-indicators{width:100%;justify-content:space-between}
+  .sidebar{display:flex;flex-direction:column}
+  .tabs-nav{flex-wrap:wrap}
+  .tab-btn{flex:1 1 auto;text-align:center;font-size:.76rem;padding:8px 10px}
+  .inventory-grid{grid-template-columns:1fr}
+  .timeline-item{grid-template-columns:78px 1fr}
+  .timeline-rail{left:38px}
+  .tl-badge{font-size:.66rem;max-width:74px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-row">
+    <div class="char-identity">
+      <h1 id="char-name" contenteditable="true" spellcheck="false">Juzo Okita</h1>
+      <div class="subtitle"><span id="char-subtitle">Former Marine Force Commander //</span><span>Spacer &amp; Bounty Hunter</span></div>
+    </div>
+    <div class="meta-indicators">
+      <div class="sound-widget" id="sound-toggle" title="Toggle sound">
+        <svg viewBox="0 0 24 24"><path d="M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77zm-3 .77L6.43 8H2v8h4.43L11 20V4z"/></svg>
+        <span id="sound-text">SOUND ON</span>
+      </div>
+      <div class="indicator"><span class="label">Age</span><span class="value" data-field="age" contenteditable="true">34</span></div>
+      <div class="indicator"><span class="label">Homeworld</span><span class="value" data-field="homeworld" contenteditable="true">Glisten</span></div>
+      <div class="indicator"><span class="label">Species</span><span class="value" data-field="species" contenteditable="true">Human</span></div>
+      <div class="indicator"><span class="label">Move</span><span class="value" data-field="movement" contenteditable="true">6m</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ============ SIDEBAR ============ -->
+  <div class="sidebar">
+    <div class="card">
+      <div class="avatar-container">
+        <img src="Avatar.png" class="avatar-img" alt="Juzo Okita">
+        <div class="avatar-overlay"></div>
+        <span class="status-badge">ACTIVE</span>
+      </div>
+      <div class="identity-row"><span>Rank</span><b id="char-rank" contenteditable="true" spellcheck="false">Force Commander</b></div>
+      <div class="identity-row"><span>Affiliation</span><span id="char-affil" contenteditable="true" spellcheck="false">Third Imperium Marines (Ret.)</span></div>
+    </div>
+
+    <div class="card">
+      <h3 class="card-title"><span>Characteristics</span><span class="hint">click row to roll • edit values</span></h3>
+      <div id="characteristics-grid"></div>
+    </div>
+
+    <div class="card">
+      <h3 class="card-title"><span>Study Period</span><span class="hint">8 wks / period</span></h3>
+      <div class="study-period-container">
+        <div>
+          <label for="study-skill-select" style="font-size:.74rem;color:var(--text-2);text-transform:uppercase;font-family:var(--font-tech);display:block;margin-bottom:4px">Training In Skill</label>
+          <select id="study-skill-select" class="study-select"></select>
+        </div>
+        <div class="study-counters">
+          <div class="counter-box"><span class="label">Weeks</span><div class="counter-controls"><button class="btn-c" onclick="adjustWeeks(-1)">−</button><span id="study-weeks" class="counter-val">0</span><button class="btn-c" onclick="adjustWeeks(1)">+</button></div></div>
+          <div class="counter-box"><span class="label">Periods</span><div class="counter-controls"><button class="btn-c" onclick="adjustPeriods(-1)">−</button><span id="study-periods" class="counter-val">0</span><button class="btn-c" onclick="adjustPeriods(1)">+</button></div></div>
+        </div>
+        <div class="progress-container">
+          <div class="progress-header"><span>Progress (8 weeks / study period)</span><span id="study-pct">0%</span></div>
+          <div class="progress-bar-bg"><div id="study-fill" class="progress-bar-fill"></div></div>
+        </div>
+        <div class="study-note">After 8 dedicated weeks, roll an <strong style="color:var(--accent)">Average (8+) EDU check</strong>. On success, +1 Study Period. Jack-of-All-Trades cannot be studied.</div>
+        <button class="study-roll-btn" onclick="triggerCharacteristicRoll('Education','EDU')">Roll EDU Study Check</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MAIN PANEL ============ -->
+  <div class="main-panel">
+    <nav class="tabs-nav">
+      <button class="tab-btn active" data-tab="skills">Skills</button>
+      <button class="tab-btn" data-tab="combat">Combat</button>
+      <button class="tab-btn" data-tab="inventory">Inventory &amp; Wealth</button>
+      <button class="tab-btn" data-tab="career">Career History</button>
+      <button class="tab-btn" data-tab="backstory">Backstory</button>
+    </nav>
+
+    <div id="tab-skills" class="tab-content active"><div class="skills-grid" id="skills-list"></div></div>
+    <div id="tab-combat" class="tab-content"><div class="combat-section" id="combat-section"></div></div>
+    <div id="tab-inventory" class="tab-content"><div class="inventory-grid" id="inventory-grid"></div></div>
+    <div id="tab-career" class="tab-content"><div class="timeline" id="timeline"></div></div>
+    <div id="tab-backstory" class="tab-content"><div class="declassified-letter"><div class="letter-stamp">RESTRICTED</div><div class="letter-content" id="letter-content"></div></div></div>
+  </div>
+</main>
+
+<!-- ============ DICE MODAL ============ -->
+<div class="dice-overlay" id="dice-overlay">
+  <div class="dice-window">
+    <div class="roll-settings-bar">
+      <div class="modal-roll-title" id="roll-action-label">DICE ROLL</div>
+      <div class="roll-settings-selectors">
+        <div class="roll-dm-input"><label for="modal-roll-dm">DM</label><input type="number" id="modal-roll-dm" class="roll-dm-val" value="0"></div>
+        <div class="roll-type-group" id="roll-type-group">
+          <button class="roll-type-btn" data-type="boon">Boon</button>
+          <button class="roll-type-btn active" data-type="normal">Normal</button>
+          <button class="roll-type-btn" data-type="bane">Bane</button>
+        </div>
+      </div>
+    </div>
+    <div class="dice-tray-container"><canvas id="dice-canvas"></canvas><div class="dice-hud-hint">click tray to re-roll · esc to close</div></div>
+    <div class="dice-sidebar">
+      <div>
+        <div class="dice-results-header">Roll Outputs</div>
+        <div class="dice-numbers" id="dice-pips"></div>
+        <div class="dice-roll-total" id="dice-total">—</div>
+        <div class="dice-roll-formula" id="dice-formula">2d6</div>
+        <div class="difficulty-checker" id="difficulty-checker">
+          <label for="difficulty-select">Target Difficulty</label>
+          <select id="difficulty-select" class="difficulty-select">
+            <option value="0">None (Info only)</option>
+            <option value="2">Simple (2+)</option>
+            <option value="4">Easy (4+)</option>
+            <option value="6">Routine (6+)</option>
+            <option value="8" selected>Average (8+)</option>
+            <option value="10">Difficult (10+)</option>
+            <option value="12">Very Difficult (12+)</option>
+            <option value="14">Formidable (14+)</option>
+          </select>
+        </div>
+        <div class="outcome-banner" id="outcome-banner">SUCCESS</div>
+      </div>
+      <div class="modal-buttons">
+        <button class="modal-btn primary" onclick="runDiceAnimation()">Re-Roll</button>
+        <button class="modal-btn secondary" onclick="closeDiceRoller()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   CHARACTER DATA  — single source of truth (persisted)
+   ============================================================ */
+const DEFAULT_CHAR = {
+  name:"Juzo Okita", subtitle:"Former Marine Force Commander //",
+  rank:"Force Commander", affiliation:"Third Imperium Marines (Ret.)",
+  age:"34", homeworld:"Glisten", species:"Human", movement:"6m",
+  characteristics:{
+    STR:{base:6,temp:0}, DEX:{base:7,temp:0}, END:{base:9,temp:0},
+    INT:{base:7,temp:0}, EDU:{base:6,temp:0}, SOC:{base:6,temp:0}
+  },
+  skills:[
+    {name:"Advocate",     char:"EDU", level:1},
+    {name:"Athletics",    char:"DEX", level:1, spec:{name:"Strength", level:1, char:"STR"}},
+    {name:"Carouse",      char:"SOC", level:1},
+    {name:"Deception",    char:"INT", level:1},
+    {name:"Gun Combat",   char:"DEX", level:3, spec:{name:"Slug", level:3, char:"DEX"}},
+    {name:"Heavy Weapons", char:"DEX", level:0},
+    {name:"Investigate",  char:"INT", level:1},
+    {name:"Jack-of-All-Trades", char:"INT", level:1, passive:true},
+    {name:"Leadership",   char:"SOC", level:1},
+    {name:"Stealth",      char:"DEX", level:0},
+    {name:"Survival",     char:"INT", level:1},
+    {name:"Tactics",      char:"INT", level:1, spec:{name:"Military", level:1, char:"INT"}},
+    {name:"Vacc Suit",    char:"DEX", level:1}
+  ],
+  armor:{name:"Poly Carapace", tl:10, protection:10, kg:4, carried:true,
+    desc:"Imposes DM −1 on all checks that involve physical activity. No penalty to close combat attacks."},
+  weapons:[
+    {name:"Gauss Rifle", variant:"Laser Sight", holo:"rifle", carried:true,
+     skillMod:6, sightMod:1, dmg:{c:4,s:6}, range:50, mag:80, auto:3, mode:"Burst",
+     tags:[{t:"carried",l:"Carried"},{t:"ap",l:"AP 5"},{t:"scope",l:"Scope"}],
+     desc:"Laser sight grants DM+1 for attacks under 50m. AP 5 penetrates heavy armor."},
+    {name:"Gauss Rifle", variant:"Standard / Long Range", holo:"rifle", carried:false,
+     skillMod:6, sightMod:0, dmg:{c:4,s:6}, range:600, mag:80, auto:3, mode:"Burst",
+     tags:[{t:"stored",l:"Stored"},{t:"ap",l:"AP 5"},{t:"scope",l:"Scope"}],
+     desc:"AP 5, scope, laser sight (DM+1 <50m), auxiliary grenade launcher (1 grenade, 3 minor actions to reload), secure weapon."},
+    {name:"Frag Grenade", variant:"Loaded", holo:"grenade-frag", carried:true,
+     skillMod:6, sightMod:0, dmg:{c:5,s:6}, range:100, mag:5, auto:0, mode:"Single",
+     tags:[{t:"carried",l:"Carried"},{t:"blast",l:"Blast 9"}],
+     desc:"High damage across a wide blast area (Blast 9)."},
+    {name:"Stun Grenade", variant:"", holo:"grenade-stun", carried:true,
+     skillMod:6, sightMod:0, dmg:{c:3,s:6}, range:100, mag:5, auto:0, mode:"Single",
+     tags:[{t:"carried",l:"Carried"},{t:"blast",l:"Blast 9"},{t:"stun",l:"Stun"}],
+     desc:"Non-lethal stun damage (Blast 9, Stun)."},
+    {name:"Aerosol Grenade", variant:"", holo:"grenade-aerosol", carried:true,
+     skillMod:6, sightMod:0, dmg:null, range:100, mag:5, auto:0, mode:"Single",
+     tags:[{t:"carried",l:"Carried"},{t:"blast",l:"Blast 9"}],
+     desc:"Fine mist diffuses lasers (damage −10 firing through). Does not block normal vision. Blocks laser comms. Dissipates in 10×3 rounds."}
+  ],
+  gear:[
+    {name:"Gauss Rifle Magazine", qty:10, kg:0, desc:"Standard high-capacity ammo magazine."},
+    {name:"Canteen", qty:1, kg:0.5, desc:"Holds 1.5 litres of liquid."},
+    {name:"Improved Commdot", qty:5, kg:0, desc:"Hands-free subvocal communicator for secure squad links."},
+    {name:"Bivvy Pack", qty:1, kg:1, desc:"Immersion protection for contents; converts to sleeping bag / bivouac."},
+    {name:"Basic Breather Mask", qty:1, kg:0, desc:"Lung implant allows breathing of Very Thin & Tainted atmospheres (types 2, 3, 4, 7, 9)."},
+    {name:"Binoculars", qty:1, kg:1, desc:"Up to 10× magnification of distant objects."},
+    {name:"Portable Computer/2", qty:1, kg:0.5, desc:"Intelligent Interface I, Translator I, Security I, Intellect I. Expert: Admin, Animals (vet), Broker, Gambler, Steward."},
+    {name:"Improved Geiger Counter", qty:1, kg:0, desc:"Detects radiation; determines source composition and direction."}
+  ],
+  finances:{cash:65, salary:0, debt:0, pension:0, shipPayment:19205, lifeSupport:1200},
+  loadUsed:9.5, loadMax:16,
+  wealth:[
+    {title:"TAS Membership", value:"LIFETIME", desc:"Awarded for heroism during Star Marine service. Access to hostels/facilities at Class A & B starports at subsidized rates. Pays 1 High Passage every 2 months (use, retain, or sell)."},
+    {title:"High Passage Tickets", value:"Cr 210,000", desc:"High-value interstellar transit tickets awarded during service."}
+  ],
+  study:{skill:"", weeks:0, periods:0},
+  career:[
+    {tag:"ACADEMY", title:"Star Marines Academy", age:"Age 17–18", body:"Entered the Star Marines Military Academy. Training in boarding operations, vacuum-suit protocols, and starport security.", points:["Carouse +1 — partied as hard as possible before the career.","Graduated with honors; commissioned immediately."]},
+    {tag:"TERM 1", title:"Lieutenant → Captain", age:"Age 18–22", body:"Commissioned as Lieutenant. Forward tactical deployments.", points:["Survival fail: mishap injury (STR −2).","Medical restoration with subsidized debt (STR +2).","Life event: END +1.","Advancement success: promoted to Captain."]},
+    {tag:"TERM 2", title:"Captain → Force Commander", age:"Age 22–26", body:"Orbital drop squads and micro-gravity boarding runs.", points:["Vacc Suit +1.","Survival success.","Life event: Advancement DM+4.","Advancement success: Force Commander."]},
+    {tag:"TERM 3", title:"Force Commander — Service Ops", age:"Age 26–30", body:"Security and command operations in contested frontier systems.", points:["Athletics +1.","Survival success.","Life event: Deception +1.","Advancement fail — denied promotion."]},
+    {tag:"TERM 4", title:"Force Commander & Resignation", age:"Age 30–34", body:"Pacification of rebellious militias. Resigned after a moral crisis following the execution of an insubordinate childhood friend.", points:["Advocate +1.","Survival success.","Life event: Jack-of-All-Trades +1.","Mustered out at 34. Medical debt cleared.","Benefits: TAS membership, carapace armor, custom service weapon."]}
+  ],
+  letter:`Dear Bluthardt,
+
+It's structure. My response to the question you asked me.
+
+Did I ever tell you: I never knew my parents, nor any other family member for that matter; as far back as I can remember. I've never cared to learn of them, though. Since I was a young boy on the streets--struggling to keep this life of mine going--all I've ever yearned for is formality, professionalism, and... structure.
+
+Nor do I care to be pitied, mind you. Just as how you weren't looking to be pitied back when we first met at Fuck You's bar. You weren't the leader of Strakh then, simply "a younger brother looking to gain power for enacting his ideals." I believe these are the words you used while moping to yourself about being denied promotion.
+
+A few months ago, I told you about Corporal Hank Volgar; I could see his story left an impression on you as well. That man's background reminds me of myself, and his ideals of you. Well, he has decided to leave the marines and fight to be free. Bluthardt. Even that Corporal, after all that he went through, knew to leave the marines instead of causing a stir. What in the world had possessed you, for you dared to invoke the wrath of the Third Imperium's military?
+
+A few weeks ago, orders came from above for my marine detachment to disassemble your militia. While this irony may seem to rival the Vilani Opera, I'm sure Command wasn't aware of the conflict of interests involved. This is why I invited you to Fuck You's; I'm sure you'd understand, I didn't wish to put my soldiers in unnecessary danger.
+
+When I aimed my body pistol at your face, I was expecting a look of shock, or confusion at the very least. Yet that look you gave me while asking your question, it has been burned into my memory. I write this letter as a way to appease my nightmares, not to answer your question. After all--I shot out your brainstem--I don't reckon you'd still be curious for the answer, my friend. Not that I think the reason you asked a question as your last words was to hear my response.
+
+I killed you without a hint of emotion on my face. Killed you in cold blood, as it's you who taught me how a military collapses if even a single officer's insubordination goes forgiven.
+
+Alas, like Hank, I'm handing in my resignation. Is this what structure has lead me to, taking the life of the one familial bond I had? I will become a spacer. I'm going to join up with Hank and start our own coterie of bounty hunters, maybe then I'll come to understand what lead you to go against the Third Imperium.
+
+I apologize if this letter reads as a disjoint dump of thoughts.
+
+Juzo Okita`
+};
+
+const STUDYABLE_SKILLS = ["Advocate","Athletics","Carouse","Deception","Gun Combat","Heavy Weapons","Investigate","Leadership","Stealth","Survival","Tactics","Vacc Suit"];
+const CHAR_KEYS = ["STR","DEX","END","INT","EDU","SOC"];
+const CHAR_FULL = {STR:"Strength",DEX:"Dexterity",END:"Endurance",INT:"Intellect",EDU:"Education",SOC:"Social"};
+
+let char = loadChar();
+
+function loadChar(){
+  try{ const s = localStorage.getItem("juzo_okita_v2"); if(s){ return deepMerge(structuredClone(DEFAULT_CHAR), JSON.parse(s)); } }catch(e){}
+  return structuredClone(DEFAULT_CHAR);
+}
+function deepMerge(a,b){ for(const k in b){ if(b[k]&&typeof b[k]==="object"&&!Array.isArray(b[k])){ a[k]=deepMerge(a[k]||{},b[k]); } else a[k]=b[k]; } return a; }
+function saveChar(){ try{ localStorage.setItem("juzo_okita_v2", JSON.stringify(char)); }catch(e){} }
+function resetChar(){ if(confirm("Reset the entire character sheet to defaults? This clears saved edits.")){ localStorage.removeItem("juzo_okita_v2"); char = structuredClone(DEFAULT_CHAR); renderAll(); } }
+
+/* ---------- helpers ---------- */
+function calcMod(rating){ if(rating<=0) return -3; return Math.floor(rating/3)-2; }
+function charRating(k){ return Math.max(0,(char.characteristics[k].base||0)+(char.characteristics[k].temp||0)); }
+function charMod(k){ return calcMod(charRating(k)); }
+function fmtMod(m){ return m>=0?`+${m}`:`${m}`; }
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function renderAll(){
+  document.getElementById("char-name").textContent = char.name;
+  document.getElementById("char-subtitle").textContent = char.subtitle;
+  document.getElementById("char-rank").textContent = char.rank;
+  document.getElementById("char-affil").textContent = char.affiliation;
+  document.querySelectorAll(".indicator .value").forEach(el=>{ const f=el.dataset.field; if(f) el.textContent = char[f]; });
+  renderCharacteristics();
+  renderStudy();
+  renderSkills();
+  renderCombat();
+  renderInventory();
+  renderCareer();
+  document.getElementById("letter-content").textContent = char.letter;
+}
+
+/* ----- characteristics ----- */
+function renderCharacteristics(){
+  const grid = document.getElementById("characteristics-grid");
+  grid.innerHTML = CHAR_KEYS.map(k=>{
+    const c = char.characteristics[k];
+    const m = calcMod(Math.max(0,(c.base||0)+(c.temp||0)));
+    return `<div class="char-row" onclick="triggerCharacteristicRoll('${CHAR_FULL[k]}','${k}')">
+      <div><span class="char-abbr">${k}</span><span class="char-name">${CHAR_FULL[k]}</span></div>
+      <div class="char-fields" onclick="event.stopPropagation()">
+        <div class="char-input-group"><label>Base</label><input type="number" class="char-val" data-char="${k}" data-part="base" value="${c.base}" min="0" max="15"></div>
+        <div class="char-input-group"><label>Temp</label><input type="number" class="char-val" data-char="${k}" data-part="temp" value="${c.temp}" min="-15" max="15"></div>
+      </div>
+      <div class="char-mod"><span class="mv" id="mod-${k}">${fmtMod(m)}</span><span class="ml">Mod</span></div>
+    </div>`;
+  }).join("");
+  grid.querySelectorAll(".char-val").forEach(inp=>{
+    inp.addEventListener("input", onCharInput);
+  });
+}
+function onCharInput(e){
+  const k=e.target.dataset.char, part=e.target.dataset.part;
+  let v=parseInt(e.target.value); if(isNaN(v)) v=0;
+  char.characteristics[k][part]=v;
+  document.getElementById("mod-"+k).textContent = fmtMod(calcMod(Math.max(0,(char.characteristics[k].base||0)+(char.characteristics[k].temp||0))));
+  saveChar();
+  renderSkills();
+}
+
+/* ----- study ----- */
+function renderStudy(){
+  const sel = document.getElementById("study-skill-select");
+  if(!sel.options.length){ sel.innerHTML = STUDYABLE_SKILLS.map(s=>`<option value="${s}">${s}</option>`).join(""); }
+  sel.value = char.study.skill || STUDYABLE_SKILLS[0];
+  document.getElementById("study-weeks").textContent = char.study.weeks;
+  document.getElementById("study-periods").textContent = char.study.periods;
+  updateProgressBar();
+  sel.onchange = ()=>{ char.study.skill = sel.value; saveChar(); };
+}
+function adjustWeeks(amt){
+  let w = char.study.weeks, p = char.study.periods;
+  w += amt;
+  if(w >= 8){ p += 1; w = 0; synth.init(); synth.playCritSuccess(); }
+  else if(w < 0){ if(p>0){ p-=1; w=7; } else w=0; }
+  char.study.weeks = w; char.study.periods = p;
+  document.getElementById("study-weeks").textContent = w;
+  document.getElementById("study-periods").textContent = p;
+  updateProgressBar(); saveChar();
+}
+function adjustPeriods(amt){ char.study.periods = Math.max(0, char.study.periods+amt); document.getElementById("study-periods").textContent = char.study.periods; saveChar(); }
+function updateProgressBar(){ const w=char.study.weeks; const pct=Math.min(100,Math.floor((w/8)*100)); document.getElementById("study-pct").textContent=pct+"%"; document.getElementById("study-fill").style.width=pct+"%"; }
+
+/* ----- skills ----- */
+function renderSkills(){
+  const c = document.getElementById("skills-list");
+  c.innerHTML = char.skills.map((sk,i)=>{
+    const m = charMod(sk.char);
+    const total = sk.level + m;
+    if(sk.passive){
+      const reduction = Math.max(0, 3 - sk.level);
+      return `<div class="skill-item">
+        <div class="skill-header-row">
+          <div class="skill-title-group"><span class="skill-name">${esc(sk.name)}</span><span class="skill-char-tag" style="background:rgba(148,163,184,.1);border-color:rgba(148,163,184,.3);color:var(--text-2)">PASSIVE</span></div>
+          <div class="skill-controls"><input class="lvl-input" type="number" min="0" max="6" value="${sk.level}" data-skill="${i}" data-part="level"></div>
+        </div>
+        <div class="skill-passive-note">Reduces the untrained penalty (normally <strong>−3</strong>) by ${sk.level}. Untrained checks suffer <strong style="color:var(--cyan)">−${reduction}</strong> instead. Cannot be improved through study.</div>
+      </div>`;
+    }
+    let specHtml = "";
+    if(sk.spec){
+      const sck = sk.spec.char || sk.char;
+      const sTotal = sk.level + sk.spec.level + charMod(sck);
+      specHtml = `<div class="specialty-row">
+        <span class="specialty-name">${esc(sk.spec.name)} <span class="ck">(${sck})</span></span>
+        <div class="specialty-controls">
+          <input class="lvl-input" type="number" min="0" max="6" value="${sk.spec.level}" data-skill="${i}" data-part="spec">
+          <span class="specialty-total">${fmtMod(sTotal)}</span>
+          <button class="roll-btn" onclick="triggerSkillRoll(${i},true)"><svg viewBox="0 0 24 24"><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>Roll</button>
+        </div>
+      </div>`;
+    }
+    return `<div class="skill-item">
+      <div class="skill-header-row">
+        <div class="skill-title-group" style="cursor:pointer" onclick="triggerSkillRoll(${i},false)"><span class="skill-name">${esc(sk.name)}</span><span class="skill-char-tag">${sk.char}</span></div>
+        <div class="skill-controls">
+          <span class="skill-total">${fmtMod(total)}</span>
+          <input class="lvl-input" type="number" min="0" max="6" value="${sk.level}" data-skill="${i}" data-part="level">
+          <button class="roll-btn" onclick="triggerSkillRoll(${i},false)"><svg viewBox="0 0 24 24"><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>Roll</button>
+        </div>
+      </div>
+      ${specHtml}
+    </div>`;
+  }).join("");
+  c.querySelectorAll(".lvl-input").forEach(inp=> inp.addEventListener("change", onSkillInput));
+}
+function onSkillInput(e){
+  const i = +e.target.dataset.skill, part = e.target.dataset.part;
+  let v = parseInt(e.target.value); if(isNaN(v)||v<0) v=0; if(v>6) v=6;
+  if(part==="spec") char.skills[i].spec.level = v; else char.skills[i].level = v;
+  saveChar(); renderSkills();
+}
+
+/* ----- combat ----- */
+// Phosphor weapon holograms — silhouettes from game-icons.net (CC-BY 3.0)
+const HOLO_ICONS = {
+  rifle: "m323.8 149.6 10.4 13.8L491.8 43.8 481.4 30zm-95.1 72.2 25.3 33.3-68.7 64.7-21.5-10.1 9.3-45.7zM18.3 424.2l99.1-95.3s21.7 10.5 27.5 8.7c.5-.2 1-.4 1.4-.8 2.6-2 6-6.9 9.1-12l1.1.5 19 8.8L74.3 482c-6.8-40.3-51.6-57.5-56-57.8zm224.1-212.8 67.7-51.3 17.1 22.6c4.7 6.3 3.9 15.5-2.4 20.2l-56.4 42.8-.7-1zm-64.8 182.3c7.9 4.8 18.3 2.3 23.1-5.7l14-23.1c3.4-5.7 3.2-12.8-.6-18.3 1.3-.7 2.5-1.5 3.6-2.3 5.4-4 9-9.9 10.1-16.4 1.1-6.8-.5-13.8-4.4-20.3l-6.4 6.1c2.1 3.9 3 8.4 2.3 12.9-1 6.4-5.7 11.5-12.7 14.2-7.7-3.1-16.5-.2-20.7 6.9l-14 23.1c-4.8 7.8-2.3 18.1 5.7 22.9zm1.7-18.6 14.1-23.2c2.4-3.9 7.4-5.1 11.3-2.8l1.1.8c3.1 2.6 3.8 7.1 1.7 10.5l-14.1 23.2c-2.4 3.9-7.4 5.2-11.3 2.8-3.9-2.3-5.2-7.4-2.8-11.3zm167.6-189c-.5-3-1.5-5.9-2.8-8.7L488.5 67.9l5.2 6.9zm-192.7 84.5-3.2 15.6c-7.7-3.3-10.2-12.1-18.1-9.2 2.4-8.6 16.4-5.3 21.3-6.4z",
+  "grenade-frag": "m253.713 25.463-4.16 15.523C147.833 33.02 69.483 164.754 40.46 273.08l11.374 57.45C105.83 169.524 184.77 82.474 254.436 83.35l136.16 36.486 14.424-53.828-151.307-40.543zm164.695 62.78-4.836 18.05 24.246 6.498a45.814 45.814 0 0 0-3.353 5.175c-5.413 9.698-8.35 22.035-8.35 35.55 0 13.513 2.937 25.85 8.35 35.548s14.18 17.628 25.46 17.628c11.278 0 20.043-7.93 25.456-17.627 5.414-9.7 8.352-22.035 8.352-35.55 0-13.512-2.938-25.848-8.35-35.546-4.145-7.425-10.26-13.8-17.956-16.387l.05-.19L418.41 88.24zm-162.88 14.017c-16.805 5.265-33.33 14.11-48.827 26.033l43.484 11.652c8.062-12.484 16.437-23.367 24.978-32.424l-19.635-5.26zm40.638 10.888c-8.584 7.96-17.527 18.798-26.414 32.04l66.496 17.818c-1.075-15.91-3.4-29.77-6.855-40.953l-33.227-8.905zm163.758 5.877c2.23 0 5.697 1.883 9.14 8.05 3.44 6.166 5.98 15.744 5.98 26.44 0 10.694-2.54 20.274-5.98 26.44-3.443 6.166-6.91 8.05-9.14 8.05-2.23 0-5.7-1.884-9.14-8.05-3.442-6.166-5.98-15.746-5.98-26.44 0-10.697 2.538-20.277 5.98-26.443 3.44-6.166 6.91-8.047 9.14-8.047zm-109.528 8.655c2.87 12.113 4.678 25.725 5.418 40.568l48.528 13.004c-7.46-18.074-17.346-33.997-29.266-46.96l-24.68-6.612zm-160.75 15.392c-18.056 17.506-34.11 39.42-46.763 64.79l66.03 17.695c9.335-25.593 19.883-48.854 31.226-68.955l-50.495-13.53zm69.762 18.694c-11.404 19.538-22.43 42.79-32.164 68.703l103.178 27.643c4.528-27.308 6.605-52.958 6.498-75.58l-77.512-20.767zm96.778 25.93c-.228 23.08-2.723 48.5-7.436 75.33l71.076 19.044c1.728-28.298-1.217-55.304-8.1-79.492l-55.54-14.88zm-221.15 37.413a277.37 277.37 0 0 0-11.522 34.048 277.86 277.86 0 0 0-6.416 30.797l68.04 18.23a642.61 642.61 0 0 1 7.385-30.533 640.212 640.212 0 0 1 10.254-34.392l-67.74-18.15zm85.93 23.023a567.73 567.73 0 0 0-10.39 34.355 570.712 570.712 0 0 0-7.29 30.56l106.593 28.56a570.619 570.619 0 0 0 8.966-30.108 568.33 568.33 0 0 0 8.183-34.947l-106.065-28.42zm124.247 33.293a641.596 641.596 0 0 1-17.185 65.047l73.085 19.582a277.995 277.995 0 0 0 9.84-29.877 276.952 276.952 0 0 0 7.043-35.25l-72.783-19.502zm-230.256 27.3c-2 25.508-.197 50.033 4.86 72.49L173.51 395.6c.822-21.46 3.467-44.693 7.943-69.057l-66.498-17.818zm84.8 22.723c-4.306 24.693-6.634 48.122-7.153 69.267l82.693 22.158c10.122-18.572 19.82-40.026 28.437-63.564l-103.976-27.86zm122.28 32.763c-8.305 23.338-17.63 44.783-27.646 63.78l58.74 15.737c15.605-16.92 29.43-37.258 40.45-60.347l-71.543-19.17zM125.65 402.125c7.774 23.043 19.257 43.167 33.743 58.918l19.636 5.262c-3.55-15.012-5.47-32.33-5.76-51.42l-47.62-12.76zm66.998 17.953c.63 20.52 3.166 38.184 7.387 51.856l33.217 8.9c10.492-9.73 21.52-23.758 32.326-41.215l-72.93-19.542zm92.31 24.733c-9.796 16.388-20.118 30.428-30.698 41.653l24.68 6.613c20.423-6.398 40.43-18.082 58.683-34.152l-52.666-14.113z",
+  "grenade-stun": "m279.31 24.574-9.34 16.188 26.34 15.2 9.348-16.185-26.347-15.203zm55.692 1.77-23.04 39.88a158.518 158.518 0 0 1 25.716 11.936c9.207 5.313 17.637 11.378 25.215 18.024l23.287-40.31-51.178-29.53zm-71.49 50.017c-4.798.02-9.493.35-14.04.984-24.26 3.384-44.065 15.097-55.01 34.043l-28.89 50.01 16.758 9.67 22.945-40.14 16.225 9.276-22.982 40.203 48.847 28.188 22.774-39.84 16.223 9.275-22.81 39.906 56.992 32.886 22.58-39.506 16.227 9.274-22.62 39.572 14.88 8.586 28.894-50.018c10.945-18.946 11.19-41.94 1.994-64.626-9.195-22.687-27.957-44.635-54.162-59.756-19.655-11.34-40.545-17.14-59.996-17.9a111.73 111.73 0 0 0-4.83-.087zM389.207 87.99l-9.348 16.184 53.646 30.957c-4.74 3.604-8.798 8.41-12.006 13.83-6.885 11.636-10.73 26.704-10.73 43.216s3.845 31.582 10.73 43.217c6.885 11.634 17.644 20.515 30.8 20.515 13.153 0 23.913-8.88 30.798-20.515 6.884-11.635 10.726-26.705 10.726-43.217s-3.842-31.58-10.726-43.215c-4.96-8.38-11.934-15.308-20.36-18.542l-73.53-42.43zm63.092 59.147c.85 0 1.724.113 2.614.345l5.164 2.98.12-.206c2.308 1.833 4.62 4.52 6.814 8.225 4.763 8.048 8.123 20.172 8.123 33.696 0 13.523-3.36 25.65-8.123 33.7-4.763 8.048-10.093 11.343-14.713 11.343-4.62 0-9.953-3.296-14.716-11.345-4.763-8.05-8.123-20.176-8.123-33.7 0-13.523 3.36-25.647 8.124-33.696 4.763-8.05 10.095-11.345 14.715-11.345zm-277.639 41.08-62.41 108.037 148.63 85.764 62.41-108.036-148.628-85.765zM84.467 301.8l-28.895 50.016c-10.946 18.948-11.19 41.943-1.996 64.63 9.193 22.68 27.948 44.62 54.143 59.74.006.004.013.01.02.013h.002c26.206 15.12 54.607 20.388 78.865 17.003 24.26-3.384 44.064-15.096 55.01-34.043l28.89-50.01-16.595-9.576-25.855 45.235-16.227-9.277 25.895-45.3-56.993-32.885-25.662 44.894-16.226-9.275 25.7-44.96-48.847-28.187-25.494 44.598-16.224-9.275 25.53-44.663-15.043-8.68z",
+  "grenade-aerosol": "M339.28 22.78c-.668-.004-1.33.015-2 .032-38.144 1.024-74.22 38.912-57.31 80.876-26.3 2.354-41.526 27.584-38.345 50.562 10.39 31.44 33.868 44.84 61.625 45-27.346 7.154-55.193 5.523-72.406-17.625L149.5 212.313l108 51.406c11.25-12.602 26.22-17.474 42.375-17.5 8.753-.016 17.863 1.386 26.906 3.75-20.033.113-37.856 7.13-50.124 22.843l.313.156a40.469 40.469 0 0 0-3.658 4.624c-.057.084-.13.165-.187.25-.242.38-.482.767-.72 1.156-.412.68-.82 1.387-1.217 2.094-.07.126-.15.247-.22.375-.003.007.005.022 0 .03-11.695 23.346 12.238 46.864 36.938 41.688-22.892 36.36 18.478 64.646 47.688 57.062-10.04-25.77 2.36-50.004 21.75-69.625-14.102 24.75-13.893 52.542 9.906 77.78 26.3 18.466 74.21 15.382 83.094-28.624 5.17 5.78 15.042 10.448 22.687 12.72V71.906c-17.245-40.312-69.907-46.36-98.592-10.25-13.265-27.505-34.395-38.723-55.157-38.875zm42.908 79.876c-26.62 22.628-41.455 30.664-52.657 61.375 1.347-24.357-3.39-39.26-21.936-53.81 24.01 8.668 47.858 8.277 74.594-7.564zm26.875 44.313c-11.567 35.16 22.327 70.176 54.75 63.5-16.33 17.418-37.404 13.692-51.844.968-24.604 6.975-44.02 34.767-34.845 62.656-30.44-27.578-5.184-70.735 24.625-74.97-9.305-15.74-9.998-36.473 7.313-52.155zm-284.157 38.436c-7.5 0-14.256 1.248-18.28 2.78-1.657.632-2.427 1.163-2.94 1.533v46.03c.514.37 1.283.9 2.94 1.53 4.024 1.535 10.78 2.782 18.28 2.782 7.5 0 14.257-1.247 18.28-2.78 1.657-.632 2.427-1.162 2.94-1.532v-11.344c-6.513-.153-11.75-5.537-11.75-12.156 0-6.62 5.237-12.003 11.75-12.156V189.72c-.513-.37-1.282-.902-2.94-1.532-4.024-1.534-10.78-2.782-18.28-2.782zM88.844 247.5c-4.025 1.568-7.708 3.378-10.938 5.406-11.378 7.147-17.156 15.95-17.156 26.656 0 .01-.028.906 2.406 2.938s6.928 4.494 12.875 6.594c11.895 4.2 29.47 7.063 48.876 7.062 19.407 0 36.98-2.863 48.875-7.062 5.95-2.1 10.443-4.562 12.876-6.594 2.434-2.032 2.406-2.93 2.406-2.938 0-9.758-5.77-18.805-17.218-26.156-3.284-2.11-7.013-4.012-11.094-5.656-.45.516-.902 1.004-1.375 1.438-2.818 2.58-6.013 4.22-9.53 5.562-7.037 2.68-15.56 4-24.94 4-9.378 0-17.9-1.32-24.936-4-3.52-1.34-6.715-2.983-9.532-5.563a17.549 17.549 0 0 0-1.594-1.687zm-27.906 55.53v192.533h127.937V303.03c-2.75 1.353-5.706 2.57-8.875 3.69-14.71 5.192-33.905 8.154-55.094 8.155-21.19 0-40.385-2.963-55.094-8.156-3.17-1.12-6.123-2.337-8.874-3.69z"
+};
+function holoSVG(type){
+  const d = HOLO_ICONS[type] || "M176 96h160c17.7 0 32 14.3 32 32v256c0 17.7-14.3 32-32 32H176c-17.7 0-32-14.3-32-32V128c0-17.7 14.3-32 32-32z";
+  return `<svg viewBox="0 0 512 512" preserveAspectRatio="xMidYMid meet"><path d="${d}"/></svg>`;
+}
+function renderCombat(){
+  const sec = document.getElementById("combat-section");
+  const a = char.armor;
+  sec.innerHTML = `
+    <div class="armor-card">
+      <div class="armor-icon-box"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg></div>
+      <div class="armor-details">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <span class="armor-name"><span class="ed" contenteditable="true" data-edit="armor.name" spellcheck="false">${esc(a.name)}</span></span>
+          <div class="armor-stats">
+            <div class="w-stat"><span class="label">TL</span><span class="value" contenteditable="true" data-edit="armor.tl">${a.tl}</span></div>
+            <div class="w-stat"><span class="label">Prot</span><span class="value" contenteditable="true" data-edit="armor.protection">${a.protection}</span></div>
+            <div class="w-stat"><span class="label">KG</span><span class="value" contenteditable="true" data-edit="armor.kg">${a.kg}</span></div>
+            <div class="w-stat"><span class="label">Carried</span><span class="value" style="color:${a.carried?'var(--ok)':'var(--text-2)'};cursor:pointer" onclick="toggleArmorCarried()">${a.carried?'YES':'NO'}</span></div>
+          </div>
+        </div>
+        <p class="armor-desc" contenteditable="true" data-edit="armor.desc" spellcheck="false" style="outline:none;margin-top:4px">${esc(a.desc)}</p>
+      </div>
+    </div>
+    ${char.weapons.map((w,i)=>weaponCard(w,i)).join("")}
+  `;
+  attachEditableHandlers(sec);
+}
+function toggleArmorCarried(){ char.armor.carried = !char.armor.carried; saveChar(); renderCombat(); }
+function weaponCard(w,i){
+  const tagsHtml = w.tags.map(t=>`<span class="wtag ${t.t}">${esc(t.l)}</span>`).join("") + `<span class="wtag ${w.carried?'carried':'stored'}" style="cursor:pointer" onclick="toggleWeaponCarried(${i})">${w.carried?'Carried':'Stored'}</span>`;
+  const dmgStr = w.dmg ? `${w.dmg.c}d${w.dmg.s}` : "—";
+  const dmgBtn = w.dmg ? `<button class="dmg-btn" onclick="triggerDamageRoll(${i})">Dmg (${dmgStr})</button>` : "";
+  return `<div class="weapon-item">
+    <div class="weapon-top">
+      <div>
+        <span class="weapon-title"><span contenteditable="true" data-edit="weapons.${i}.name" spellcheck="false" style="outline:none">${esc(w.name)}</span>${w.variant?` <span style="color:var(--text-2);font-size:.85rem">(${esc(w.variant)})</span>`:""}</span>
+        <div class="weapon-tags">${tagsHtml}</div>
+      </div>
+    </div>
+    <div class="holo-wrap"><div class="holo-flicker">${holoSVG(w.holo)}</div></div>
+    <div class="weapon-stats-grid">
+      <div class="w-stat"><span class="label">Skill</span><span class="value" contenteditable="true" data-edit="weapons.${i}.skillMod">${w.skillMod}</span></div>
+      <div class="w-stat"><span class="label">Sight</span><span class="value" contenteditable="true" data-edit="weapons.${i}.sightMod">${w.sightMod}</span></div>
+      <div class="w-stat"><span class="label">Damage</span><span class="value" contenteditable="true" data-edit="weapons.${i}.dmgStr">${dmgStr}</span></div>
+      <div class="w-stat"><span class="label">Range</span><span class="value" contenteditable="true" data-edit="weapons.${i}.range">${w.range}</span></div>
+      <div class="w-stat"><span class="label">Mag</span><span class="value" contenteditable="true" data-edit="weapons.${i}.mag">${w.mag}</span></div>
+      <div class="w-stat"><span class="label">Auto</span><span class="value" contenteditable="true" data-edit="weapons.${i}.auto">${w.auto}</span></div>
+      <div class="w-stat"><span class="label">Mode</span><span class="value" contenteditable="true" data-edit="weapons.${i}.mode">${esc(w.mode)}</span></div>
+    </div>
+    <div class="weapon-actions">
+      <p class="weapon-desc" contenteditable="true" data-edit="weapons.${i}.desc" spellcheck="false" style="outline:none">${esc(w.desc)}</p>
+      <div class="weapon-buttons">
+        <button class="roll-btn" onclick="triggerAttackRoll(${i})"><svg viewBox="0 0 24 24"><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>Attack</button>
+        ${dmgBtn}
+      </div>
+    </div>
+  </div>`;
+}
+function toggleWeaponCarried(i){ char.weapons[i].carried = !char.weapons[i].carried; saveChar(); renderCombat(); }
+
+/* ----- inventory ----- */
+function renderInventory(){
+  const g = document.getElementById("inventory-grid");
+  g.innerHTML = `
+    <div>
+      <div class="section-head"><span>Carried Equipment</span><span class="load">Load: <span class="ed" contenteditable="true" data-edit="loadUsed">${char.loadUsed}</span> / <span class="ed" contenteditable="true" data-edit="loadMax">${char.loadMax}</span> KG</span></div>
+      <div class="gear-list">
+        ${char.gear.map((it,i)=>`<div class="gear-item">
+          <div class="gear-info">
+            <div class="gear-title" contenteditable="true" data-edit="gear.${i}.name" spellcheck="false" style="outline:none">${esc(it.name)}</div>
+            <p class="gear-desc" contenteditable="true" data-edit="gear.${i}.desc" spellcheck="false" style="outline:none">${esc(it.desc)}</p>
+          </div>
+          <div class="gear-meta">
+            <span class="gear-badge">Qty <span class="qty" contenteditable="true" data-edit="gear.${i}.qty">${it.qty}</span></span>
+            <span><span class="gear-mass" contenteditable="true" data-edit="gear.${i}.kg">${it.kg}</span> KG</span>
+          </div>
+        </div>`).join("")}
+      </div>
+    </div>
+    <div>
+      <div class="section-head"><span>Finances</span><span style="font-family:var(--font-tech);font-size:.78rem;color:var(--muted)">all fields editable</span></div>
+      <div class="finances-box"><div class="finance-grid">
+        <div class="finance-item editable"><label>Cash on Hand</label><div class="finance-row"><span class="pre">Cr</span><input class="finance-input" type="number" data-edit="finances.cash" value="${char.finances.cash}"></div></div>
+        <div class="finance-item editable"><label>Monthly Salary</label><div class="finance-row"><span class="pre">Cr</span><input class="finance-input" type="number" data-edit="finances.salary" value="${char.finances.salary}"></div></div>
+        <div class="finance-item editable"><label>Debt</label><div class="finance-row"><span class="pre">Cr</span><input class="finance-input ${char.finances.debt>0?'negative':''}" type="number" data-edit="finances.debt" value="${char.finances.debt}"></div></div>
+        <div class="finance-item editable"><label>Pension</label><div class="finance-row"><span class="pre">Cr</span><input class="finance-input" type="number" data-edit="finances.pension" value="${char.finances.pension}"></div></div>
+        <div class="finance-item editable span2"><label>Monthly Ship Payment</label><div class="finance-row"><span class="pre">Cr</span><input class="finance-input negative" type="number" data-edit="finances.shipPayment" value="${char.finances.shipPayment}"></div></div>
+        <div class="finance-item editable span2"><label>Monthly Life Support</label><div class="finance-row"><span class="pre">Cr</span><input class="finance-input negative" type="number" data-edit="finances.lifeSupport" value="${char.finances.lifeSupport}"></div></div>
+      </div></div>
+      <div class="wealth-card">
+        <div class="section-head" style="font-size:.95rem;margin-bottom:10px"><span>Muster-Out Benefits &amp; Wealth</span></div>
+        ${char.wealth.map((w,i)=>`<div class="wealth-item">
+          <div class="wealth-header"><span class="wealth-title" contenteditable="true" data-edit="wealth.${i}.title" spellcheck="false" style="outline:none">${esc(w.title)}</span><span class="wealth-value" contenteditable="true" data-edit="wealth.${i}.value" spellcheck="false" style="outline:none">${esc(w.value)}</span></div>
+          <p class="wealth-desc" contenteditable="true" data-edit="wealth.${i}.desc" spellcheck="false" style="outline:none">${esc(w.desc)}</p>
+        </div>`).join("")}
+      </div>
+    </div>
+  `;
+  attachEditableHandlers(g);
+}
+
+/* ----- career ----- */
+function renderCareer(){
+  const t = document.getElementById("timeline");
+  t.innerHTML = char.career.map((c,i)=>`<div class="timeline-item">
+    <div class="tl-badge-col"><span class="tl-badge">${esc(c.tag)}</span><span class="tl-dot"></span></div>
+    <div class="tl-content">
+      <div class="tl-head"><span class="tl-title">${esc(c.title)}</span><span class="tl-age">${esc(c.age)}</span></div>
+      <div class="tl-detail"><p>${esc(c.body)}</p><ul>${c.points.map(p=>`<li>${esc(p)}</li>`).join("")}</ul></div>
+    </div>
+    ${i<char.career.length-1?'<div class="timeline-rail"></div>':''}
+  </div>`).join("");
+}
+
+/* ============================================================
+   EDITABLE HANDLERS  (contenteditable + numeric inputs)
+   ============================================================ */
+function setPath(path, value){
+  const parts = path.split(".");
+  let obj = char;
+  for(let i=0;i<parts.length-1;i++){ if(!(parts[i] in obj)) return; obj = obj[parts[i]]; }
+  obj[parts[parts.length-1]] = value;
+}
+function attachEditableHandlers(root){
+  root.querySelectorAll("[contenteditable='true'][data-edit]").forEach(el=>{
+    el.addEventListener("blur", onEditableBlur);
+  });
+  root.querySelectorAll("input[data-edit], .finance-input[data-edit]").forEach(el=>{
+    el.addEventListener("change", onNumericInput);
+  });
+}
+function onEditableBlur(e){
+  const path = e.target.dataset.edit;
+  let txt = e.target.textContent.trim();
+  // numeric contenteditable fields (armor kg/tl/prot, weapon stats, qty, kg, load)
+  const numPaths = ["armor.tl","armor.protection","armor.kg","loadUsed","loadMax"];
+  const isWeaponNum = /^weapons\.\d+\.(skillMod|sightMod|range|mag|auto)$/.test(path);
+  const isGearNum = /^gear\.\d+\.(qty|kg)$/.test(path);
+  if(numPaths.includes(path) || isWeaponNum || isGearNum){
+    let n = parseFloat(txt.replace(/[^0-9.\-]/g,""));
+    if(isNaN(n)) n = 0;
+    setPath(path, n);
+    e.target.textContent = n;
+  } else if(/^weapons\.\d+\.dmgStr$/.test(path)){
+    // parse "4d6" style
+    const m = txt.match(/(\d+)\s*d\s*(\d+)/i);
+    if(m){ const idx=+path.split(".")[1]; char.weapons[idx].dmg={c:+m[1],s:+m[2]}; }
+    else { const idx=+path.split(".")[1]; char.weapons[idx].dmg=null; }
+    e.target.textContent = m?`${m[1]}d${m[2]}`:"—";
+  } else {
+    setPath(path, txt);
+  }
+  saveChar();
+}
+function onNumericInput(e){
+  const path = e.target.dataset.edit;
+  let v = parseFloat(e.target.value); if(isNaN(v)) v=0;
+  setPath(path, v);
+  saveChar();
+}
+
+/* top-level header editables */
+document.querySelectorAll("#char-name,#char-subtitle,#char-rank,#char-affil").forEach(el=>{
+  el.addEventListener("blur", ()=>{
+    const id = el.id;
+    if(id==="char-name") char.name = el.textContent.trim();
+    else if(id==="char-subtitle") char.subtitle = el.textContent.trim();
+    else if(id==="char-rank") char.rank = el.textContent.trim();
+    else if(id==="char-affil") char.affiliation = el.textContent.trim();
+    saveChar();
+  });
+});
+document.querySelectorAll(".indicator .value").forEach(el=>{
+  el.addEventListener("blur", ()=>{ const f=el.dataset.field; if(f){ char[f]=el.textContent.trim(); saveChar(); } });
+});
+
+/* ============================================================
+   AUDIO  (Web Audio synth — impact-driven, no orphan timers)
+   ============================================================ */
+class AudioSynth{
+  constructor(){ this.ctx=null; this.muted=false; }
+  init(){ if(!this.ctx){ const AC=window.AudioContext||window.webkitAudioContext; this.ctx=new AC(); } if(this.ctx.state==="suspended") this.ctx.resume(); }
+  clack(intensity=1){
+    if(this.muted) return; this.init(); const t=this.ctx.currentTime;
+    const o=this.ctx.createOscillator(), g=this.ctx.createGain();
+    o.type="triangle"; o.frequency.setValueAtTime(150+Math.random()*90,t); o.frequency.exponentialRampToValueAtTime(55,t+0.06);
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(0.22*intensity,t+0.003); g.gain.exponentialRampToValueAtTime(0.001,t+0.07);
+    o.connect(g); g.connect(this.ctx.destination); o.start(t); o.stop(t+0.08);
+    const bs=this.ctx.sampleRate*0.03, buf=this.ctx.createBuffer(1,bs,this.ctx.sampleRate), d=buf.getChannelData(0);
+    for(let i=0;i<bs;i++) d[i]=Math.random()*2-1;
+    const n=this.ctx.createBufferSource(); n.buffer=buf;
+    const f=this.ctx.createBiquadFilter(); f.type="bandpass"; f.frequency.setValueAtTime(1300,t);
+    const gn=this.ctx.createGain(); gn.gain.setValueAtTime(0,t); gn.gain.linearRampToValueAtTime(0.12*intensity,t+0.002); gn.gain.exponentialRampToValueAtTime(0.001,t+0.025);
+    n.connect(f); f.connect(gn); gn.connect(this.ctx.destination); n.start(t); n.stop(t+0.035);
+  }
+  tone(freq,type,vol,dur,t){ const o=this.ctx.createOscillator(),g=this.ctx.createGain(); o.type=type; o.frequency.setValueAtTime(freq,t); g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vol,t+0.008); g.gain.exponentialRampToValueAtTime(0.001,t+dur); o.connect(g); g.connect(this.ctx.destination); o.start(t); o.stop(t+dur+0.05); }
+  success(){ if(this.muted)return; this.init(); const t=this.ctx.currentTime; this.tone(523.25,"sine",.15,.15,t); this.tone(659.25,"sine",.13,.2,t+.07); this.tone(783.99,"sine",.1,.25,t+.14); this.tone(1046.5,"sine",.08,.35,t+.21); }
+  critSuccess(){ if(this.muted)return; this.init(); const t=this.ctx.currentTime; this.tone(523.25,"triangle",.12,.1,t); this.tone(783.99,"triangle",.1,.1,t+.05); this.tone(1046.5,"triangle",.08,.15,t+.1); this.tone(1567.98,"sine",.07,.25,t+.15); this.tone(2093,"sine",.05,.45,t+.2); }
+  failure(){ if(this.muted)return; this.init(); const t=this.ctx.currentTime; const o=this.ctx.createOscillator(),f=this.ctx.createBiquadFilter(),g=this.ctx.createGain(); o.type="sawtooth"; o.frequency.setValueAtTime(170,t); o.frequency.linearRampToValueAtTime(55,t+0.4); f.type="lowpass"; f.frequency.setValueAtTime(260,t); g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(.16,t+.02); g.gain.exponentialRampToValueAtTime(.001,t+.45); o.connect(f); f.connect(g); g.connect(this.ctx.destination); o.start(t); o.stop(t+.5); }
+}
+const synth = new AudioSynth();
+document.getElementById("sound-toggle").addEventListener("click", function(){
+  synth.muted = !synth.muted;
+  this.classList.toggle("muted", synth.muted);
+  document.getElementById("sound-text").textContent = synth.muted?"SOUND OFF":"SOUND ON";
+  if(!synth.muted){ synth.init(); synth.clack(1); }
+});
+
+/* ============================================================
+   TABS
+   ============================================================ */
+document.querySelectorAll(".tab-btn").forEach(btn=> btn.addEventListener("click", ()=>{
+  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll(".tab-content").forEach(c=>c.classList.remove("active"));
+  btn.classList.add("active");
+  document.getElementById("tab-"+btn.dataset.tab).classList.add("active");
+}));
+
+/* ============================================================
+   DICE TRIGGERS
+   ============================================================ */
+function triggerCharacteristicRoll(name,key){
+  rollIsDamage=false; rollName=`${name} Check`;
+  rollBaseMod = charMod(key); rollSource=key;
+  openDiceRoller();
+}
+function triggerSkillRoll(i, useSpec){
+  const sk = char.skills[i];
+  if(sk.passive) return;
+  rollIsDamage=false;
+  if(useSpec && sk.spec){
+    rollName = `${sk.name} (${sk.spec.name})`;
+    rollBaseMod = sk.level + sk.spec.level + charMod(sk.spec.char||sk.char);
+  } else {
+    rollName = `${sk.name} Roll`;
+    rollBaseMod = sk.level + charMod(sk.char);
+  }
+  openDiceRoller();
+}
+function triggerAttackRoll(i){
+  const w = char.weapons[i];
+  rollIsDamage=false; rollName=`${w.name} Attack`;
+  rollBaseMod = w.skillMod + w.sightMod; // skillMod already includes characteristic DM
+  openDiceRoller();
+}
+function triggerDamageRoll(i){
+  const w = char.weapons[i]; if(!w.dmg) return;
+  rollIsDamage=true; rollName=`${w.name} Damage`;
+  damageDiceCount=w.dmg.c; damageDieSides=w.dmg.s;
+  openDiceRoller();
+}
+
+/* ============================================================
+   DICE MODAL
+   ============================================================ */
+let rollIsDamage=false, rollName="Roll", rollBaseMod=0, rollSource="";
+let damageDiceCount=4, damageDieSides=6;
+let currentRollType="normal";
+let rollResults=[], selectedResults=[];
+let diceList=[]; let rafId=null; let lastTs=0; let settledTimeout=null;
+
+const overlay = document.getElementById("dice-overlay");
+const canvas = document.getElementById("dice-canvas");
+const ctx = canvas.getContext("2d");
+
+document.getElementById("roll-type-group").addEventListener("click", e=>{
+  const b = e.target.closest(".roll-type-btn"); if(!b) return;
+  currentRollType = b.dataset.type;
+  document.querySelectorAll(".roll-type-btn").forEach(x=>x.classList.toggle("active", x===b));
+  runDiceAnimation();
+});
+document.getElementById("modal-roll-dm").addEventListener("input", recalculateRollResult);
+document.getElementById("difficulty-select").addEventListener("change", evaluateOutcome);
+
+overlay.addEventListener("click", e=>{ if(e.target===overlay) closeDiceRoller(); });
+document.addEventListener("keydown", e=>{ if(e.key==="Escape" && overlay.classList.contains("active")) closeDiceRoller(); });
+canvas.addEventListener("click", runDiceAnimation);
+
+function openDiceRoller(){
+  overlay.classList.add("active");
+  document.getElementById("roll-action-label").textContent = rollName.toUpperCase();
+  document.getElementById("modal-roll-dm").value = 0;
+  const group = document.getElementById("roll-type-group");
+  const diff = document.getElementById("difficulty-checker");
+  if(rollIsDamage){ group.style.display="none"; diff.style.display="none"; document.getElementById("dice-formula").textContent=`${damageDiceCount}d${damageDieSides}`; }
+  else { group.style.display="flex"; diff.style.display="block"; currentRollType="normal"; document.querySelectorAll(".roll-type-btn").forEach(x=>x.classList.toggle("active", x.dataset.type==="normal")); }
+  // size canvas once visible
+  requestAnimationFrame(()=>{ resizeCanvas(); runDiceAnimation(); });
+}
+function closeDiceRoller(){
+  if(rafId) cancelAnimationFrame(rafId); rafId=null;
+  if(settledTimeout) clearTimeout(settledTimeout); settledTimeout=null;
+  overlay.classList.remove("active");
+}
+function resizeCanvas(){ canvas.width=canvas.clientWidth||300; canvas.height=canvas.clientHeight||200; }
+window.addEventListener("resize", ()=>{ if(overlay.classList.contains("active")) resizeCanvas(); });
+
+/* ---- 3D cube geometry ---- */
+const SZ = 19;
+const VERTS = [
+  {x:-SZ,y:-SZ,z:-SZ},{x:SZ,y:-SZ,z:-SZ},{x:SZ,y:SZ,z:-SZ},{x:-SZ,y:SZ,z:-SZ},
+  {x:-SZ,y:-SZ,z:SZ},{x:SZ,y:-SZ,z:SZ},{x:SZ,y:SZ,z:SZ},{x:-SZ,y:SZ,z:SZ}
+];
+// faces: vertex indices + the value shown on that face + its outward normal (in local space)
+const FACES = [
+  {idx:[4,5,6,7], val:1, n:{x:0,y:0,z:1}},
+  {idx:[0,3,2,1], val:6, n:{x:0,y:0,z:-1}},
+  {idx:[0,1,5,4], val:2, n:{x:0,y:-1,z:0}},
+  {idx:[3,7,6,2], val:5, n:{x:0,y:1,z:0}},
+  {idx:[0,4,7,3], val:4, n:{x:-1,y:0,z:0}},
+  {idx:[1,2,6,5], val:3, n:{x:1,y:0,z:0}}
+];
+// target orientation (radians) to bring `val` face toward the camera (+z)
+const TARGET = {
+  1:{x:0,y:0}, 6:{x:0,y:Math.PI},
+  2:{x:-Math.PI/2,y:0}, 5:{x:Math.PI/2,y:0},
+  4:{x:0,y:Math.PI/2}, 3:{x:0,y:-Math.PI/2}
+};
+const LIGHT = {x:0.35,y:-0.5,z:0.78}; // direction toward light (up & toward camera)
+
+class Die{
+  constructor(x,y,target){
+    this.x=x; this.y=y; this.z=0;
+    this.vx=(Math.random()-0.5)*260;
+    this.vy=-(90+Math.random()*120); // gentle upward toss
+    this.vz=(Math.random()-0.5)*120;
+    this.rx=Math.random()*Math.PI*2; this.ry=Math.random()*Math.PI*2; this.rz=Math.random()*Math.PI*2;
+    this.wrx=(Math.random()-0.5)*14; this.wry=(Math.random()-0.5)*14; this.wrz=(Math.random()-0.5)*14;
+    this.target=target; this.settled=false; this.rest=0; this.lastClack=0;
+  }
+  update(dt,floorY,bounds){
+    if(this.settled) return;
+    const g=1500;
+    this.vy += g*dt;
+    this.x += this.vx*dt; this.y += this.vy*dt; this.z += this.vz*dt;
+    this.rx += this.wrx*dt; this.ry += this.wry*dt; this.rz += this.wrz*dt;
+    // floor
+    if(this.y > floorY){
+      this.y = floorY;
+      if(this.vy > 0){
+        const impact = this.vy;
+        this.vy = -this.vy*0.42;
+        this.vx *= 0.7; this.vz *= 0.7;
+        this.wrx *= 0.55; this.wry *= 0.55; this.wrz *= 0.55;
+        if(impact > 60) this.clack(Math.min(1, impact/320+0.25));
+        // once a bounce is too weak to matter, stop bouncing and magnetically settle
+        if(Math.abs(this.vy) < 60){ this.vy=0; this.vx*=0.4; this.vz*=0.4; this.beginSettle(); return; }
+      }
+    }
+    if(this.y < 8){ this.y=8; if(this.vy<0){ this.vy=-this.vy*0.45; if(this.vy>40) this.clack(.2); } }
+    // walls
+    if(this.x<bounds.minX){this.x=bounds.minX; if(this.vx<0){this.vx=-this.vx*0.5; this.clack(.3);}} if(this.x>bounds.maxX){this.x=bounds.maxX; if(this.vx>0){this.vx=-this.vx*0.5; this.clack(.3);}}
+    if(this.z<bounds.minZ){this.z=bounds.minZ; if(this.vz<0){this.vz=-this.vz*0.5; this.clack(.3);}} if(this.z>bounds.maxZ){this.z=bounds.maxZ; if(this.vz>0){this.vz=-this.vz*0.5; this.clack(.3);}}
+    // damping (frame-rate independent)
+    const ld = Math.pow(0.995, dt*60), ad = Math.pow(0.985, dt*60);
+    this.vx*=ld; this.vz*=ld; this.wrx*=ad; this.wry*=ad; this.wrz*=ad;
+    // settle test (backup)
+    const ke = Math.abs(this.vy)+Math.abs(this.vx)+Math.abs(this.vz)+Math.abs(this.wrx)+Math.abs(this.wry)+Math.abs(this.wrz);
+    if(this.y>=floorY-1 && Math.abs(this.vy)<3 && ke<50){ this.rest += dt; if(this.rest>0.10){ this.beginSettle(); } } else { this.rest=0; }
+  }
+  beginSettle(){ this.settled=true; this.settleT=0; this.sx=this.x; this.sy=this.y; this.srx=this.rx; this.sry=this.ry; this.srz=this.rz; }
+  clack(intensity){ const now=performance.now(); if(now-this.lastClack<70) return; this.lastClack=now; synth.clack(intensity); }
+  // magnetic settle interpolation
+  doSettle(dt, settleX, settleY){
+    this.settleT = Math.min(1, this.settleT + dt/0.35);
+    const t = this.settleT, e = 1-Math.pow(1-t,3);
+    this.x = this.sx + (settleX-this.sx)*e;
+    this.y = this.sy + (settleY-this.sy)*e;
+    const tg = TARGET[this.target];
+    this.rx = this.srx + (angleDelta(this.srx,tg.x))*e;
+    this.ry = this.sry + (angleDelta(this.sry,tg.y))*e;
+    this.rz = this.srz + (0 - this.srz)*e * 0.5;
+  }
+}
+function angleDelta(a,b){ let d=b-a; while(d<-Math.PI)d+=Math.PI*2; while(d>Math.PI)d-=Math.PI*2; return d; }
+function rotPt(p,rx,ry,rz){
+  let c=Math.cos(rx),s=Math.sin(rx); let y=p.y*c-p.z*s, z=p.y*s+p.z*c, x=p.x;
+  c=Math.cos(ry); s=Math.sin(ry); let x2=x*c+z*s, z2=-x*s+z*c; x=x2; z=z2;
+  c=Math.cos(rz); s=Math.sin(rz); let x3=x*c-y*s, y3=x*s+y*c; return {x:x3,y:y3,z:z};
+}
+
+function runDiceAnimation(){
+  if(rafId) cancelAnimationFrame(rafId); if(settledTimeout) clearTimeout(settledTimeout);
+  synth.init();
+  rollResults=[]; selectedResults=[];
+  let n = 2;
+  if(rollIsDamage){
+    n = damageDiceCount;
+    for(let i=0;i<n;i++) rollResults.push(Math.floor(Math.random()*damageDieSides)+1);
+    selectedResults=[...rollResults];
+  } else if(currentRollType==="normal"){
+    rollResults.push(Math.floor(Math.random()*6)+1, Math.floor(Math.random()*6)+1);
+    selectedResults=[...rollResults];
+  } else {
+    n=3;
+    for(let i=0;i<3;i++) rollResults.push(Math.floor(Math.random()*6)+1);
+    const s=[...rollResults].sort((a,b)=>a-b);
+    selectedResults = currentRollType==="boon" ? [s[1],s[2]] : [s[0],s[1]];
+  }
+  diceList=[]; const sp = canvas.width/(n+1);
+  for(let i=0;i<n;i++){ const d=new Die(sp*(i+1)+(Math.random()-0.5)*30, canvas.height*0.28, rollResults[i]); diceList.push(d); }
+  document.getElementById("dice-total").textContent="…";
+  document.getElementById("outcome-banner").classList.remove("active");
+  document.getElementById("dice-pips").innerHTML = rollResults.map(()=>`<div class="die-result">·</div>`).join("");
+  lastTs = performance.now();
+  rafId = requestAnimationFrame(animate);
+}
+
+function animate(ts){
+  const dt = Math.min(0.033,(ts-lastTs)/1000); lastTs=ts;
+  // background
+  ctx.fillStyle="rgba(6,9,19,0.55)"; ctx.fillRect(0,0,canvas.width,canvas.height);
+  // grid
+  ctx.strokeStyle="rgba(255,115,0,0.05)"; ctx.lineWidth=1;
+  for(let x=0;x<canvas.width;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke();}
+  for(let y=0;y<canvas.height;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(canvas.width,y);ctx.stroke();}
+  const floorY = canvas.height*0.62;
+  // floor line
+  ctx.strokeStyle="rgba(255,115,0,0.12)"; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(0,floorY+SZ); ctx.lineTo(canvas.width,floorY+SZ); ctx.stroke();
+  const bounds={minX:SZ+8,maxX:canvas.width-SZ-8,minZ:-60,maxZ:60};
+  const n=diceList.length; const sp=canvas.width/(n+1);
+  let allSettled = diceList.length>0 && diceList.every(d=>d.settled && d.settleT>=1);
+  diceList.forEach((d,i)=>{
+    if(!d.settled) d.update(dt,floorY,bounds);
+    else if(d.settleT<1) d.doSettle(dt, sp*(i+1), floorY);
+    drawDie(d);
+  });
+  if(!allSettled){ rafId = requestAnimationFrame(animate); }
+  else { displayRollResults(); }
+}
+
+function drawDie(d){
+  const camZ = 320, scale = camZ/(camZ - d.z);
+  // transformed verts
+  const tv = VERTS.map(v=>{ const r=rotPt(v,d.rx,d.ry,d.rz); return {x:d.x+r.x*scale,y:d.y+r.y*scale,z:r.z}; });
+  // contact shadow
+  const shadowScale = Math.max(0.3, 1 - (d.y - (canvas.height*0.62))/-200 );
+  ctx.save(); ctx.globalAlpha = 0.35*Math.max(0.2,shadowScale);
+  ctx.fillStyle="rgba(0,0,0,0.5)"; ctx.beginPath();
+  ctx.ellipse(d.x, canvas.height*0.62+SZ+2, SZ*0.9*shadowScale, SZ*0.32*shadowScale, 0, 0, Math.PI*2); ctx.fill(); ctx.restore();
+  // faces sorted by depth (painter's algorithm) — draw far first
+  const faces = FACES.map(f=>{
+    const pts=f.idx.map(i=>tv[i]); const cz=(pts[0].z+pts[1].z+pts[2].z+pts[3].z)/4;
+    // normal in world (rotated)
+    const rn = rotPt(f.n,d.rx,d.ry,d.rz);
+    return {f,pts,cz,rn};
+  }).sort((a,b)=>a.cz-b.cz);
+  const baseCol = d.settled && d.settleT>=1 ? [255,115,0] : [0,229,255];
+  faces.forEach(({f,pts,rn})=>{
+    // lambertian
+    const lam = Math.max(0.3, rn.x*LIGHT.x+rn.y*LIGHT.y+rn.z*LIGHT.z);
+    const sh = 0.3 + lam*0.7;
+    const col = `rgba(${baseCol[0]*sh|0},${baseCol[1]*sh|0},${baseCol[2]*sh|0},0.95)`;
+    ctx.beginPath(); ctx.moveTo(pts[0].x,pts[0].y); for(let k=1;k<4;k++)ctx.lineTo(pts[k].x,pts[k].y); ctx.closePath();
+    ctx.fillStyle = col; ctx.fill();
+    ctx.strokeStyle = `rgba(${baseCol[0]|0},${baseCol[1]|0},${baseCol[2]|0},1)`; ctx.lineWidth=1.6;
+    ctx.shadowBlur = d.settled?12:6; ctx.shadowColor = `rgb(${baseCol[0]|0},${baseCol[1]|0},${baseCol[2]|0})`; ctx.stroke(); ctx.shadowBlur=0;
+    if(rn.z > -0.02) drawPips(f.val, pts, baseCol);
+  });
+}
+function drawPips(val,pts,col){
+  const cx=(pts[0].x+pts[1].x+pts[2].x+pts[3].x)/4, cy=(pts[0].y+pts[1].y+pts[2].y+pts[3].y)/4;
+  const ux=(pts[1].x-pts[0].x+pts[2].x-pts[3].x)/4, uy=(pts[1].y-pts[0].y+pts[2].y-pts[3].y)/4;
+  const vx=(pts[3].x-pts[0].x+pts[2].x-pts[1].x)/4, vy=(pts[3].y-pts[0].y+pts[2].y-pts[1].y)/4;
+  const pip=(lx,ly)=>{ const px=cx+lx*ux+ly*vx, py=cy+lx*uy+ly*vy;
+    ctx.beginPath(); ctx.arc(px,py,3,0,Math.PI*2); ctx.fillStyle=`rgb(${Math.min(255,col[0]+60)|0},${Math.min(255,col[1]+60)|0},${Math.min(255,col[2]+60)|0})`; ctx.shadowBlur=5; ctx.shadowColor="rgba(255,255,255,0.7)"; ctx.fill(); ctx.shadowBlur=0; };
+  const POS={
+    1:[[0,0]], 2:[[-0.5,-0.5],[0.5,0.5]], 3:[[-0.5,-0.5],[0,0],[0.5,0.5]],
+    4:[[-0.5,-0.5],[0.5,-0.5],[-0.5,0.5],[0.5,0.5]],
+    5:[[-0.5,-0.5],[0.5,-0.5],[0,0],[-0.5,0.5],[0.5,0.5]],
+    6:[[-0.5,-0.5],[0.5,-0.5],[-0.5,0],[0.5,0],[-0.5,0.5],[0.5,0.5]]
+  };
+  (POS[val]||[]).forEach(p=>pip(p[0],p[1]));
+}
+
+function displayRollResults(){
+  const pips = document.getElementById("dice-pips"); pips.innerHTML="";
+  let discardIdx=-1;
+  if(!rollIsDamage && currentRollType!=="normal"){
+    const dval = currentRollType==="boon" ? Math.min(...rollResults) : Math.max(...rollResults);
+    discardIdx = rollResults.indexOf(dval);
+  }
+  rollResults.forEach((v,i)=>{ const el=document.createElement("div"); el.className="die-result"+(i===discardIdx?" discarded":""); el.textContent=v; pips.appendChild(el); });
+  recalculateRollResult();
+}
+function recalculateRollResult(){
+  if(!rollResults.length) return;
+  const dm = parseInt(document.getElementById("modal-roll-dm").value)||0;
+  const sum = selectedResults.reduce((a,b)=>a+b,0);
+  if(rollIsDamage){
+    const tot=sum+dm; document.getElementById("dice-total").textContent=tot;
+    document.getElementById("dice-formula").textContent = `${selectedResults.join("+")} = ${sum}`+(dm?` ${fmtMod(dm)}`:"");
+    document.getElementById("outcome-banner").classList.remove("active");
+  } else {
+    const tot = sum + rollBaseMod + dm;
+    document.getElementById("dice-total").textContent = tot;
+    const f = `Roll (${selectedResults.join("+")}) = ${sum}\nMod ${fmtMod(rollBaseMod)}`+(dm?` · DM ${fmtMod(dm)}`:"");
+    document.getElementById("dice-formula").textContent = f;
+    evaluateOutcome();
+  }
+}
+function evaluateOutcome(){
+  if(rollIsDamage) return;
+  const tot = parseInt(document.getElementById("dice-total").textContent); if(isNaN(tot)) return;
+  const diff = parseInt(document.getElementById("difficulty-select").value)||0;
+  const banner = document.getElementById("outcome-banner");
+  if(diff===0){ banner.classList.remove("active"); return; }
+  const effect = tot - diff; banner.className="outcome-banner active";
+  if(effect>=0){
+    banner.classList.add("success");
+    if(effect>=6){ banner.textContent=`EXCEPTIONAL SUCCESS · EFFECT +${effect}`; synth.playCritSuccess(); }
+    else { banner.textContent=`SUCCESS · EFFECT +${effect}`; synth.playSuccess(); }
+  } else {
+    banner.classList.add("failure");
+    if(effect<=-6){ banner.textContent=`EXCEPTIONAL FAILURE · EFFECT ${effect}`; }
+    else { banner.textContent=`FAILURE · EFFECT ${effect}`; }
+    synth.playFailure();
+  }
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+renderAll();
+</script>
+</body>
+</html>

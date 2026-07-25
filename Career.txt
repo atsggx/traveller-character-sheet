@@ -1,0 +1,31 @@
+Education:
+- Enter Military Academy for Star Marines
+- Life Event: Party as hard as possible before career (Carouse +1)
+- Graduation
+
+Term 1: Age 18
+- Enter Star Marines with commission (Lieutenant)
+- Survival Fail: Mishap Injury STR-2
+  - STR+2 with subsidized medical debt 
+- Life Event: END+1
+- Advancement Success: Captain
+
+Term 2: Age 22
+- Vaccsuit +1
+- Survival Success
+- Life Event: Advancement Check DM+4
+- Advancement Success: Force Commander
+
+Term 3: Age 26
+- Athletics +1
+- Survival Success
+- Life Event: Deception +1
+- Advancement Fail
+
+Term 4: Age 30
+- Advocate +1
+- Survival Success
+- Life Event: Jack of All Trades +1
+- Advancement Fail: Muster out at the age of 34
+  - Pay off medical debt
+  - Benefits: TAS Membership (heroism during service), Armor, Weapon

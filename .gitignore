@@ -1,0 +1,16 @@
+# --- Cloudflare / Wrangler ---
+.wrangler/
+dist/
+
+# --- Claude Code local state ---
+.claude/settings.local.json
+
+# --- OS / editor cruft ---
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*.log
+*.swp
+.vscode/
+.idea/
