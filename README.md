@@ -40,7 +40,6 @@ Juzo Okita — a 34-year-old human from Glisten, mustered out of the Star Marine
 | `CharacterSheet.md` | Structured data extract the sheet was transcribed from (source of truth). |
 | `Career.txt` | Raw career-term notes. |
 | `Backstory.txt` | Raw text of the resignation letter. |
-| `1.png` – `4.png` | The original scanned character-sheet pages the data was transcribed from. |
 
 ## Run locally
 
