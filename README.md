@@ -2,7 +2,7 @@
 
 An interactive, self-contained web character sheet for **Juzo Okita**, a Star Marines veteran turned bounty hunter in the [*Traveller* 2nd Edition](https://www.mongoosepublishing.com/collections/traveller-2e) TTRPG.
 
-> **Live:** <a href="https://traveller2e.pages.dev/" target="_blank" rel="noopener noreferrer">https://traveller2e.pages.dev/</a>
+> **Live:** https://traveller2e.pages.dev/
 
 Built as a single static HTML file—no build step, no dependencies, no backend. Open `index.html` in a browser and it just runs. Edits persist locally via `localStorage`.
 
